@@ -40,6 +40,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'debugger'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'selenium-webdriver'
