@@ -1,0 +1,76 @@
+#tabs
+  #tab_elements_list.tab.active
+    .tab_before
+    = 'list'
+    .tab_after
+#end_tabs
+
+#tabs_contents
+  #tab_content_elements_list.tab_content.active
+    %h1 Listing elements
+
+    #list_header
+      #header_1.element_name.element_field= 'Name'
+      #header_2.element_short_description.element_field= 'Short Description'
+      #header_3.element_show
+      #header_4.element_edit
+      #header_5.element_delete
+    #end_header.end_header
+
+    #elements
+      - @elements.each do |element|
+        = render 'elements/element', :element => element
+    %br
+
+    = link_to 'New Element', '#', :id => 'new_element_link'
+
+#form_new_element{:style => "display:none;position:absolute;top:50%;left:50%;margin-left:-200px;z-index:10;background-color:white;padding:15px"}
+  = render 'elements/edit', :element => @element
+#overlay{:style => "position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgb(119, 119, 119); opacity:0.7; cursor:pointer;display:none;z-index:9"}
+
+:javascript
+  $('#new_element_link').click(function(){
+    $('#overlay').show();
+    $('#form_new_element').show();
+   });
+ 
+  $('#overlay').click(function(){
+    $('#form_new_element').hide();
+    $('#overlay').hide();
+   });
+    
+  $('.element_delete').bind("ajax:success", function(xhr, data, status) {
+    $("#element_" + data.id).remove();
+    tab = $('#tab_elements_show_' + data.id);
+    tab_content = $('#tab_content_elements_show_' + data.id)
+    if(tab){
+      tab.remove();
+    };
+    if(tab_content){
+      tab_content.remove();
+    }
+  });
+
+  function switch_tab(tab_name){
+    tab = "tab_" + tab_name;
+    tab_content = "tab_content_" + tab_name
+    activate_tab(".tab", tab);
+    activate_tab(".tab_content", tab_content);
+  };
+    
+  function activate_tab(class_tab, tab){
+    $(class_tab).each(function(){
+      if($(this).attr('id') == tab){
+        $(this).removeClass('inactive');
+        $(this).addClass('active');
+      }else{
+        $(this).removeClass('active');
+        $(this).addClass('inactive');
+      }
+    });
+   }
+
+   $(".tab").click(function(){
+     tab_id = $(this).attr('id').replace(/tab_(.*)/, "$1");
+     switch_tab(tab_id);
+   }); 
