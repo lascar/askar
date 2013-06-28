@@ -5,7 +5,7 @@
 .tab_content{:id => "tab_content_elements_show_" + element_id}
   .element_field_tab{:id => element_id_string + '_show_name', :class => 'element_name'}= element_name
   .element_field_tab{:id => element_id_string + '_show_short_description', :class => 'element_short_description'}= element_short_description
-  .element_field_tab{:id => element_id_string + '_show_edit', :class => 'element_edit'}= link_to 'Edit', "elements/edit/" + element_id, :remote => true, :method => :post
-  .element_field_tab{:id => element_id_string + '_show_delete', :class => 'element_delete'}= link_to 'Destroy', "elements/delete/" + element_id, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?', :id => element_id }
+  .element_field_tab{:id => element_id_string + '_show_edit', :class => 'element_edit'}= link_to 'Edit', "/elements/edit/" + element_id, :remote => true, :method => :post, :id => element_id_string + '_show_edit_link'
+  .element_field_tab{:id => element_id_string + '_show_delete', :class => 'element_delete'}= link_to 'Destroy', "/elements/delete/" + element_id, :remote => true, :method => :delete, :data => { :confirm => 'Are you sure?', :id => element_id }, :id => element_id_string + '_show_delete_link'
   .end_element_tab
 
