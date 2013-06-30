@@ -41,6 +41,6 @@ describe 'add, show, update and delete element' do
     click_button('Update Element')
     find('#element_1_show_short_description', :visible => true).text.should == "primero elemento"
     find('#tab_elements_list').click
-    find('#element_1_short_description', :visible => false ).text.should == 'primero elemento'
+    find('#element_1_short_description', :visible => true ).text.should == 'primero elemento'
   end
 end
