@@ -45,6 +45,9 @@ group :development, :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
+  gem 'guard-rspec'
+  gem "spork-rails"
+  gem "guard-spork" 
 end
 
 gem "haml", ">= 3.1.6"
