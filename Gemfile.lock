@@ -58,6 +58,8 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    factory_girl (4.2.0)
+      activesupport (>= 3.0.0)
     ffi (1.9.0)
     formatador (0.2.4)
     guard (1.8.1)
@@ -201,6 +203,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   database_cleaner
   debugger
+  factory_girl
   guard-rspec
   guard-spork
   haml (>= 3.1.6)

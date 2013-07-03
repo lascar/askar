@@ -48,6 +48,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem "spork-rails"
   gem "guard-spork" 
+  gem 'factory_girl'
 end
 
 gem "haml", ">= 3.1.6"
