@@ -22,7 +22,9 @@ Spork.prefork do
 
   RSpec.configure do |config|
     config.include Capybara::DSL
-    config.filter_run :focus => true
+    config.treat_symbols_as_metadata_keys_with_true_values = true  
+    config.filter_run :focus => true  
+    config.run_all_when_everything_filtered = true  
     config.run_all_when_everything_filtered = true
     # ## Mock Framework
     #
@@ -70,6 +72,7 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  FactoryGirl.reload 
   # This code will be run each time you run your specs.
 
 end
