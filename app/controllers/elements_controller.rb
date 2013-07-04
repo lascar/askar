@@ -14,10 +14,10 @@ class ElementsController < ApplicationController
   def show
     element = Element.find(params[:id])
     respond_to do |format|
-      format.js { render 'elements/show', :locals => {:element => element}} 
+      format.js { render 'elements/show', :locals => {:element => element}}
     end
   end
-    
+
   def edit
     element = Element.find(params[:id])
     respond_to do |format|

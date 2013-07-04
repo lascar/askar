@@ -33,12 +33,12 @@
     $('#overlay').show();
     $('#form_new_element').show();
    });
- 
+
   $('#overlay').click(function(){
     $('#form_new_element').hide();
     $('#overlay').hide();
    });
-    
+
   $('.element_delete').bind("ajax:success", function(xhr, data, status) {
     $("#element_" + data.id).remove();
     tab = $('#tab_elements_show_' + data.id);

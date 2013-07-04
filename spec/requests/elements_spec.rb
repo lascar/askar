@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe 'add, show, update and delete element' do
   before(:each) do
-    Element.create!(:name => 'element 1')
+    create(:element)
     visit elements_list_path
   end
 

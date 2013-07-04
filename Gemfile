@@ -47,8 +47,8 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'guard-rspec'
   gem "spork-rails"
-  gem "guard-spork" 
-  gem 'factory_girl'
+  gem "guard-spork"
+  gem "factory_girl_rails", "~> 4.0"
 end
 
 gem "haml", ">= 3.1.6"

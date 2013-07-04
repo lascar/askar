@@ -21,6 +21,7 @@ Spork.prefork do
   Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
   RSpec.configure do |config|
+    config.include FactoryGirl::Syntax::Methods
     config.include Capybara::DSL
     config.treat_symbols_as_metadata_keys_with_true_values = true  
     config.filter_run :focus => true  
