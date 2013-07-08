@@ -1,11 +1,14 @@
 require 'spec_helper'
-describe 'add, show, update and delete element' do
-  before(:each) do
-    Element.create!(:name => 'element 1')
-  end
+require 'element'
 
-  it 'add an new element' do
-    Element.count == 1
+describe Element do
+
+  it 'must have a name' do
+    should_not be_valid
+  end
+  
+  it 'responds to name' do
+    should respond_to(:name)
   end
 end
 

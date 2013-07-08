@@ -2,7 +2,6 @@ require 'spec_helper'
 describe 'add, show, update and delete element' do
   before(:each) do
     create(:element)
-    create(:element, :name => "toto")
     visit elements_list_path
   end
 
@@ -29,7 +28,7 @@ describe 'add, show, update and delete element' do
     fill_in "element[short_description]", :with => 'primero elemento'
     click_button('Update Element')
     save_page('capy.page.html')
-    find('#element_1_short_description', :visible => true).text.should == "primero elemento"
+    find('#element_1_short_description').text.should == "primero elemento"
   end
   
   it 'lets the user update an new element from show', :js => true do
@@ -49,7 +48,6 @@ describe 'add, show, update and delete element' do
     find(:xpath, '//a[@href="/elements/delete/1"]').text.should == "Destroy"
     page.evaluate_script('window.confirm = function() { return true; }')
     find(:xpath, '//a[@href="/elements/delete/1"]').click
-    #page.driver.browser.switch_to.alert.accept
     Element.count == 0
   end
   
@@ -60,5 +58,9 @@ describe 'add, show, update and delete element' do
     Element.count == 0
     expect(page).to have_no_content 'element 1'
     #find(:css, "#comment_stream_list li[data-id='#{@id3}']").should_not be_visible
+  end
+
+  it 'do nothing', :focus => true do
+     Element.count
   end
 end
