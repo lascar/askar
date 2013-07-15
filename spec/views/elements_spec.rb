@@ -10,10 +10,31 @@ describe "elements/list.html.haml" do
       @element = Element.new
     end
 
-    it "get the elements list with pagination", :focus => true do
+    it "get elements list with pagination" do
       visit '/elements/list'
-      page.should have_css('.list_element', :count => 53)
+      page.should have_css('.list_element', :count => 20)
     end
+
+    it "get elements list with offset de page" do
+      visit '/elements/list?page=2'
+      page.save_screenshot('screenshot.png')
+      page.should have_css('#element_21')
+    end
+    
+    it "is some way to go one page back" do
+      visit '/elements/list?page=2'
+      within('#tab_content_elements_list') do
+        find('a.link_page_back')['href'] == '/elements/list?page=1'
+      end
+    end
+
+    it "is some way to go one page futher", :focus => true do
+      visit '/elements/list?page=2'
+      within('#tab_content_elements_list') do
+        find('a.link_page_forward')['href'] == '/elements/list?page=3'
+      end
+    end
+
   end
 end
 
