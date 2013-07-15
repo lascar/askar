@@ -26,8 +26,13 @@
 
     .footer
       #footer_elements_list
-        = link_to image_tag('arrow_left.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i - 1) : 1)), :class => 'link_page_back'
-        = link_to image_tag('arrow_right.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i + 1) : 1)), :class => 'link_page_forward'
+        .footer-left
+          = 'toto'
+        .paginate
+          = link_to image_tag('arrow_left.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i - 1) : 1)), :class => 'link_page_back'
+          = link_to image_tag('arrow_right.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i + 1) : 1)), :class => 'link_page_forward'
+        .footer-right
+          = 'toto'
 
 #form_new_element{:style => "display:none;position:absolute;top:50%;left:50%;margin-left:-200px;z-index:10;background-color:white;padding:15px"}
   = render 'elements/edit', :element => @element
