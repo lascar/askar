@@ -27,7 +27,6 @@ describe 'add, show, update and delete element' do
     find(:xpath, '//textarea[@id="element_short_description"]')
     fill_in "element[short_description]", :with => 'primero elemento'
     click_button('Update Element')
-    save_page('capy.page.html')
     find('#element_1_short_description').text.should == "primero elemento"
   end
   
@@ -40,8 +39,6 @@ describe 'add, show, update and delete element' do
     find('#element_1_show_short_description', :visible => true).text.should == "primero elemento"
     find('#tab_elements_list').click
     find('#element_1_short_description', :visible => true ).text.should == 'primero elemento'
-    page.save_screenshot('screenshot.png')
-    #find(:css, "#tab_elements_list").should_not be_visible
   end
   
   it 'lets the user delete an new element from index', :js => true do
@@ -51,9 +48,10 @@ describe 'add, show, update and delete element' do
     Element.count == 0
   end
   
-  it 'lets the user delete an new element from show', :js => true do
+  it 'lets the user delete an new element from show', :focus => true, :js => true do
     find(:xpath, '//a[@href="/elements/show/1"]').click
     page.evaluate_script('window.confirm = function() { return true; }')
+    save_page('capy.page.html')
     find(:xpath, '//a[@id="element_1_show_delete_link"]').click
     Element.count == 0
     expect(page).to have_no_content 'element 1'

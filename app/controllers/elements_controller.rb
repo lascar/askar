@@ -2,7 +2,7 @@ class ElementsController < ApplicationController
   # GET /elements
   # GET /elements.json
   def list
-    @elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * 21 : 0).limit(20)
+    @elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * 20 : 0).limit(20)
     @element = Element.new
 
     respond_to do |format|
@@ -30,7 +30,7 @@ class ElementsController < ApplicationController
       element = Element.create(:name => params[:element][:name], :short_description => params[:element][:short_description])
     else
       element = Element.find(params[:id])
-      element.update_attributes(params[:element])
+      element.update_attributes!(element_params)
     end
     respond_to do |format|
       format.js { render 'elements/update', :locals => {:element => element}} 
@@ -43,4 +43,9 @@ class ElementsController < ApplicationController
       format.js { render 'elements/delete', :locals => {:element => element}} 
     end
   end
+
+  private
+    def element_params
+      params.require(:element).permit(:name, :short_description)
+    end
 end
