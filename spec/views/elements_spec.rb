@@ -35,6 +35,27 @@ describe "elements/list.html.haml" do
       end
     end
 
+    context "there is a total element count and max per page" do
+      before(:each) do
+        count = 53
+        max_per_page = 20
+      end
+      
+      it "is warned in witch page we are", :focus => true do
+        save_page('capy.page.html')
+        within('#footer_elements_list') do
+          within('.paginate') do
+            find('span#actual_page').text == '1'
+          end
+        end
+        visit '/elements/list?page=2'
+        within('#footer_elements_list') do
+          within('.paginate') do
+            find('span#actual_page').text == '2'
+          end
+        end
+      end
+    end
   end
 end
 
