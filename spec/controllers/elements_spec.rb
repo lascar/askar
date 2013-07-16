@@ -32,7 +32,7 @@ describe ElementsController do
 
       it "has 53 elements" do
         get :list
-        assigns(:elements).count.should be_equal 53
+        assigns(:elements).count.should be_equal 20
       end
     end
   end

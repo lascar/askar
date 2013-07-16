@@ -28,7 +28,7 @@ describe "elements/list.html.haml" do
       end
     end
 
-    it "is some way to go one page futher", :focus => true do
+    it "is some way to go one page futher" do
       visit '/elements/list?page=2'
       within('#tab_content_elements_list') do
         find('a.link_page_forward')['href'] == '/elements/list?page=3'
