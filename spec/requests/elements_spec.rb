@@ -59,6 +59,6 @@ describe 'add, show, update and delete element' do
   end
 
   it 'do nothing' do
-     puts Element.count
+     Element.count
   end
 end
