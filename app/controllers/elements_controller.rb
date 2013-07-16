@@ -2,7 +2,7 @@ class ElementsController < ApplicationController
   # GET /elements
   # GET /elements.json
   def list
-    @elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * 20 : 0).limit(20)
+    @elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * 21 : 0).limit(20)
     @element = Element.new
 
     respond_to do |format|

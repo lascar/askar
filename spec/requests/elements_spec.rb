@@ -18,7 +18,7 @@ describe 'add, show, update and delete element' do
   it 'lets the user show an new element', :js => true do
     find(:xpath, '//a[@href="/elements/show/1"]').text.should == "Show"
     find(:xpath, '//a[@href="/elements/show/1"]').click
-    find('#element_1_show_name', :visible => true).text.should == "element 1"
+    find('#element_1_show_name', :visible => true).text.should == "element_1"
   end
   
   it 'lets the user update an new element from index', :js => true do
@@ -60,7 +60,7 @@ describe 'add, show, update and delete element' do
     #find(:css, "#comment_stream_list li[data-id='#{@id3}']").should_not be_visible
   end
 
-  it 'do nothing', :focus => true do
-     Element.count
+  it 'do nothing' do
+     puts Element.count
   end
 end
