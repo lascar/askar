@@ -60,7 +60,7 @@ describe 'add, show, update and delete element' do
     #find(:css, "#comment_stream_list li[data-id='#{@id3}']").should_not be_visible
   end
 
-  it 'do nothing', :focus => true do
+  it 'do nothing' do
      Element.count
   end
 end
