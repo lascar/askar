@@ -17,7 +17,7 @@ describe "elements/list.html.haml" do
 
     it "get elements list with offset de page" do
       visit '/elements/list?page=2'
-      page.save_screenshot('screenshot.png')
+      save_page('capy.page.html')
       page.should have_css('#element_21')
     end
     
