@@ -30,6 +30,7 @@
           = 'toto'
         .paginate
           = link_to image_tag('arrow_left.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i - 1) : 1)), :class => 'link_page_back'
+          %span#actual_page=page
           = link_to image_tag('arrow_right.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i + 1) : 1)), :class => 'link_page_forward'
         .footer-right
           = 'toto'

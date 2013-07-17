@@ -39,10 +39,11 @@ describe "elements/list.html.haml" do
       before(:each) do
         count = 53
         max_per_page = 20
+        visit '/elements/list'
       end
       
-      it "is warned in witch page we are", :focus => true do
-        save_page('capy.page.html')
+      it "is warned in witch page we are" do
+        #save_page('capy.page.html')
         within('#footer_elements_list') do
           within('.paginate') do
             find('span#actual_page').text == '1'
@@ -52,6 +53,14 @@ describe "elements/list.html.haml" do
         within('#footer_elements_list') do
           within('.paginate') do
             find('span#actual_page').text == '2'
+          end
+        end
+      end
+      
+      it "is warned how much elements are in total", :focus => true do
+        within('#footer_elements_list') do
+          within('.paginate') do
+            find('span#total').text == '53'
           end
         end
       end
