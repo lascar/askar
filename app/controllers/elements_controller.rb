@@ -2,13 +2,13 @@ class ElementsController < ApplicationController
   # GET /elements
   # GET /elements.json
   def list
-    count = Element.count
+    @total = Element.count
     page = params[:page] || 1
     @elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * 20 : 0).limit(20)
     @element = Element.new
 
     respond_to do |format|
-      format.html { render 'elements/list', :locals => {:page => page, :count => count}}
+      format.html { render 'elements/list', :locals => {:page => page, :count => @total}}
       format.json { render json: @elements }
     end
   end

@@ -4,21 +4,19 @@ describe ElementsController do
     context "there is 1 element" do
       before(:each) do
         create(:element, :name => 'toto')
+        get :list
       end
 
       it "responds successfully with an HTTP 200 status code" do
-        get :list
         expect(response).to be_success
         expect(response.status).to eq(200)
       end
 
       it "renders the list template" do
-        get :list
         expect(response).to render_template("list")
       end
 
       it "paginate the @elements" do
-        get :list
         assigns(:elements).count.should be_equal 1
       end
     end
@@ -28,11 +26,17 @@ describe ElementsController do
         for i in (1 .. 53) do
           create(:element, :name => "element_" + i.to_s)
         end
+        get :list
       end
 
       it "has 53 elements" do
-        get :list
         assigns(:elements).count.should be_equal 20
+      end
+
+      it "has a total element, page, and array of pages to link in list" do
+        assigns(:total) == 53
+        assigns(:page) == 1
+        
       end
     end
   end
