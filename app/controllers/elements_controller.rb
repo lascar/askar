@@ -3,12 +3,13 @@ class ElementsController < ApplicationController
   # GET /elements.json
   def list
     @total = Element.count
-    page = params[:page] || 1
+    @page = params[:page] || 1
+    @pages_links = arrays_pages_links
     @elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * 20 : 0).limit(20)
     @element = Element.new
 
     respond_to do |format|
-      format.html { render 'elements/list', :locals => {:page => page, :count => @total}}
+      format.html { render 'elements/list' }
       format.json { render json: @elements }
     end
   end
@@ -49,5 +50,12 @@ class ElementsController < ApplicationController
   private
     def element_params
       params.require(:element).permit(:name, :short_description)
+    end
+
+    def arrays_pages_links
+      case
+      when @page < 6
+        [1,2,3,4,5]
+      end
     end
 end

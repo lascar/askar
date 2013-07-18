@@ -34,9 +34,9 @@ describe ElementsController do
       end
 
       it "has a total element, page, and array of pages to link in list" do
-        assigns(:total) == 53
-        assigns(:page) == 1
-        
+        assigns(:total).should eq 53
+        assigns(:page).should eq 1
+        assigns(:pages_links).should eq( [1,2,3,4,5] )
       end
     end
   end
