@@ -6,8 +6,6 @@ describe "elements/list.html.haml" do
       for i in (1 .. 53) do
         create(:element, :name => "element_" + i.to_s)
       end
-      elements = Element.all
-      element = Element.new
     end
 
     it "get elements list with pagination" do

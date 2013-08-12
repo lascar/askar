@@ -3,6 +3,7 @@
 *.rbc
 *.sassc
 .sass-cache
+Gemfile.lock
 capybara-*.html
 .rspec
 /.bundle
