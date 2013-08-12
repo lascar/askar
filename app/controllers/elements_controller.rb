@@ -1,15 +1,18 @@
 class ElementsController < ApplicationController
   # GET /elements
   # GET /elements.json
+  MAX_PER_PAGE = 20
+
   def list
-    @total = Element.count
-    @page = params[:page] || 1
-    @pages_links = arrays_pages_links
-    @elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * 20 : 0).limit(20)
-    @element = Element.new
+    total_elements = Element.count
+    page = params[:page] || 1
+    total_pages= (total_elements / MAX_PER_PAGE + 1).ceil
+    pages_links = arrays_pages_links(page.to_i)
+    elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * MAX_PER_PAGE : 0).limit(MAX_PER_PAGE)
+    element = Element.new
 
     respond_to do |format|
-      format.html { render 'elements/list' }
+      format.html { render 'elements/list', :locals => {:total_elements => total_elements, :page => page, :total_pages => total_pages, :pages_links => pages_links, :elements => elements, :element => element} }
       format.json { render json: @elements }
     end
   end
@@ -52,9 +55,9 @@ class ElementsController < ApplicationController
       params.require(:element).permit(:name, :short_description)
     end
 
-    def arrays_pages_links
+    def arrays_pages_links(page)
       case
-      when @page < 6
+      when page < 6
         [1,2,3,4,5]
       end
     end

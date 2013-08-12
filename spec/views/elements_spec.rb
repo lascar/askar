@@ -6,8 +6,8 @@ describe "elements/list.html.haml" do
       for i in (1 .. 53) do
         create(:element, :name => "element_" + i.to_s)
       end
-      @elements = Element.all
-      @element = Element.new
+      elements = Element.all
+      element = Element.new
     end
 
     it "get elements list with pagination" do
@@ -57,10 +57,11 @@ describe "elements/list.html.haml" do
         end
       end
       
-      it "is warned how much elements are in total", :focus => true do
+      it "is warned how much elements are in total" do
+        total_elements = Element.count
         within('#footer_elements_list') do
           within('.paginate') do
-            find('span#total').text == '53'
+            find('span#total_pages').text == (total_elements / 20 + 1).ceil.to_s
           end
         end
       end
