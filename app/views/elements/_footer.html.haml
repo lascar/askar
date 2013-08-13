@@ -1,0 +1,9 @@
+.footer
+  #footer_elements_list
+    .footer-left
+    .paginate
+      = link_to image_tag('arrow_left.png'), elements_list_path(:page => page == 1 ? page : page.to_i - 1), :class => 'link_page_back'
+      %span#actual_page=page
+      %span#total_pages='/' + total_pages.to_s
+      = link_to image_tag('arrow_right.png'), elements_list_path(:page => page == total_elements ? page : page.to_i + 1), :class => 'link_page_forward'
+    .footer-right

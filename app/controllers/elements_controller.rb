@@ -7,12 +7,12 @@ class ElementsController < ApplicationController
     total_elements = Element.count
     page = params[:page] || 1
     total_pages= (total_elements / MAX_PER_PAGE + 1).ceil
-    pages_links = arrays_pages_links(page.to_i)
+    pages_links_left, pages_links_right = arrays_pages_links(page.to_i, total_pages.to_i)
     elements = Element.offset(params[:page] ? (params[:page].to_i - 1) * MAX_PER_PAGE : 0).limit(MAX_PER_PAGE)
     element = Element.new
 
     respond_to do |format|
-      format.html { render 'elements/list', :locals => {:total_elements => total_elements, :page => page, :total_pages => total_pages, :pages_links => pages_links, :elements => elements, :element => element} }
+      format.html { render 'elements/list', :locals => {:total_elements => total_elements, :page => page, :total_pages => total_pages, :pages_links_left => pages_links_left, :pages_links_right => pages_links_right, :elements => elements, :element => element} }
       format.json { render json: @elements }
     end
   end
@@ -55,10 +55,7 @@ class ElementsController < ApplicationController
       params.require(:element).permit(:name, :short_description)
     end
 
-    def arrays_pages_links(page)
-      case
-      when page < 6
-        [1,2,3,4,5]
-      end
+    def arrays_pages_links(page, total_pages)
+      return [1,2,3], [5,6,7]
     end
 end

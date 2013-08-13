@@ -24,15 +24,7 @@
 
     = link_to 'New Element', '#', :id => 'new_element_link'
 
-    .footer
-      #footer_elements_list
-        .footer-left
-        .paginate
-          = link_to image_tag('arrow_left.png'), elements_list_path(:page => page == 1 ? page : page.to_i - 1), :class => 'link_page_back'
-          %span#actual_page=page
-          %span#total_pages='/' + total_pages.to_s
-          = link_to image_tag('arrow_right.png'), elements_list_path(:page => page == total_elements ? page : page.to_i + 1), :class => 'link_page_forward'
-        .footer-right
+    = render 'footer', :page => page, :total_elements => total_elements, :total_pages => total_pages, :pages_links_left => pages_links_left, :pages_links_right => pages_links_right
 
 #form_new_element{:style => "display:none;position:absolute;top:50%;left:50%;margin-left:-200px;z-index:10;background-color:white;padding:15px"}
   = render 'elements/edit', :element => element
