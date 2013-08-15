@@ -1,21 +1,18 @@
 require 'spec_helper'
-describe "elements/list.html.haml" do
-  context "there are 53 elements" do
+describe "elements/list.html.haml", :js => true do
+  context "there are 253 elements" do
     before(:each) do
-      for i in (1 .. 53) do
+      for i in (1 .. 253) do
         create(:element, :name => "element_" + i.to_s)
       end
-      visit elements_list_path
+      visit elements_list_path(:page => 8)
     end
 
-    it "get elements list with pagination", :js => true do
-      visit '/elements/list'
+    it "get elements list with pagination" do
       page.should have_css('.list_element', :count => 20)
     end
-  end
 
-  it 'do nothing' do
-    book = double("book")
-    book.stub(:title) { "The RSpec Book" }
+    it "get element number 161" do
+    end
   end
 end

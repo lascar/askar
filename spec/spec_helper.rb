@@ -10,11 +10,37 @@ Spork.prefork do
 
   # This file is copied to spec/ when you run 'rails generate rspec:install'
   ENV["RAILS_ENV"] ||= 'test'
+  Spork.trap_method(Rails::Application, :reload_routes!)
+  Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
+  require "rails/application"
   require File.expand_path("../../config/environment", __FILE__)
+  require 'rack/handler/webrick'
+  require 'rexml/document'
+  require 'tzinfo/definitions/Etc/UTC'
+  require 'rails/backtrace_cleaner'
+  require 'active_record/connection_adapters/sqlite3_adapter'
+  require 'active_support/backtrace_cleaner'
+  require 'active_support/core_ext/module/attribute_accessors'
+  require 'active_support/core_ext/module/remove_method'
+  require 'active_support/core_ext/string/output_safety'
+  require 'active_support/core_ext/string/access'
+  require 'active_support/core_ext/array/extract_options'
+  require 'active_support/core_ext/hash/slice'
+  require 'active_support/json'
+  require 'multi_json/adapters/json_common'
+  require 'multi_json/adapters/json_gem'
+  require 'action_dispatch/routing/redirection'
   require 'rspec/rails'
+  require 'rspec/mocks'
+  require 'rspec/expectations'
+  require 'rspec/matchers'
+  require 'rspec/core/mocking/with_rspec'
+  require 'rspec/core/formatters/progress_formatter'
+  require 'rspec/core/formatters/base_text_formatter'
   require 'capybara/rspec'
   require 'capybara/rails'
-
+  require 'selenium-webdriver'
+  require 'selenium/webdriver/firefox/bridge'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
@@ -28,11 +54,10 @@ Spork.prefork do
     config.run_all_when_everything_filtered = true  
     config.run_all_when_everything_filtered = true
     config.use_transactional_fixtures = false
-    config.before :each do
+    config.before :all do
+      puts 'cleaning before start'
       cleaning_db
-    end
-    config.after :each do
-      cleaning_db
+      puts 'cleaning before end'
     end
 
     # ## Mock Framework
@@ -67,6 +92,18 @@ Spork.prefork do
     client.timeout = 12 # <= Page Load Timeout value in seconds
     Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => client)
   end
+  module Kernel
+    def require_with_trace(*args)
+      start = Time.now.to_f
+      @indent ||= 0
+      @indent += 2
+      require_without_trace(*args)
+      @indent -= 2
+      Kernel::puts "#{' '*@indent}#{((Time.now.to_f - start)*1000).to_i} #{args[0]}"
+    end
+    alias_method_chain :require, :trace
+  end
+
 end
 
 def cleaning_db
@@ -90,7 +127,6 @@ end
 Spork.each_run do
   FactoryGirl.reload 
   # This code will be run each time you run your specs.
-
 end
 
 # --- Instructions ---
