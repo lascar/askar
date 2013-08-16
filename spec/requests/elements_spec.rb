@@ -51,6 +51,7 @@ describe 'add, show, update and delete element' do
   it 'lets the user delete an new element from show', :js => true do
     find(:xpath, '//a[@href="/elements/show/1"]').click
     page.evaluate_script('window.confirm = function() { return true; }')
+    save_page('capy.page.html')
     find(:xpath, '//a[@id="element_1_show_delete_link"]').click
     Element.count == 0
     expect(page).to have_no_content 'element 1'
