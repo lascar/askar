@@ -42,7 +42,7 @@ group :development, :test do
   gem 'debugger'
   gem 'rspec-rails'
   gem 'capybara'
-  gem 'selenium-webdriver', '>= 2.33.0'
+  gem "selenium-webdriver", "~> 2.34.0"
   gem 'database_cleaner'
   gem 'guard-rspec'
   gem 'spork-rails', :git => 'https://github.com/sporkrb/spork-rails'

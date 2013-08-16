@@ -18,24 +18,16 @@
     #end_header.end_header
 
     #elements
-      - @elements.each do |element|
+      - elements.each do |element|
         = render 'elements/element', :element => element
     %br
 
     = link_to 'New Element', '#', :id => 'new_element_link'
 
-    .footer
-      #footer_elements_list
-        .footer-left
-          = 'toto'
-        .paginate
-          = link_to image_tag('arrow_left.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i - 1) : 1)), :class => 'link_page_back'
-          = link_to image_tag('arrow_right.png'), elements_list_path(:page => (params[:page] ? (params[:page].to_i + 1) : 1)), :class => 'link_page_forward'
-        .footer-right
-          = 'toto'
+    = render 'footer', :page => page, :total_elements => total_elements, :total_pages => total_pages, :pages_links_left => pages_links_left, :pages_links_right => pages_links_right
 
 #form_new_element{:style => "display:none;position:absolute;top:50%;left:50%;margin-left:-200px;z-index:10;background-color:white;padding:15px"}
-  = render 'elements/edit', :element => @element
+  = render 'elements/edit', :element => element
 #overlay{:style => "position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgb(119, 119, 119); opacity:0.7; cursor:pointer;display:none;z-index:9"}
 
 :javascript

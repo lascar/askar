@@ -27,7 +27,6 @@ describe 'add, show, update and delete element' do
     find(:xpath, '//textarea[@id="element_short_description"]')
     fill_in "element[short_description]", :with => 'primero elemento'
     click_button('Update Element')
-    save_page('capy.page.html')
     find('#element_1_short_description').text.should == "primero elemento"
   end
   
@@ -40,8 +39,6 @@ describe 'add, show, update and delete element' do
     find('#element_1_show_short_description', :visible => true).text.should == "primero elemento"
     find('#tab_elements_list').click
     find('#element_1_short_description', :visible => true ).text.should == 'primero elemento'
-    page.save_screenshot('screenshot.png')
-    #find(:css, "#tab_elements_list").should_not be_visible
   end
   
   it 'lets the user delete an new element from index', :js => true do
@@ -61,5 +58,7 @@ describe 'add, show, update and delete element' do
   end
 
   it 'do nothing' do
+    book = double("book")
+    book.stub(:title) { "The RSpec Book" }
   end
 end
