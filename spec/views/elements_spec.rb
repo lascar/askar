@@ -18,6 +18,7 @@ describe "elements/list.html.haml" do
     end
 
     it "get elements list with offset de page" do
+      save_page('capy.html')
       page.should have_css('#element_141')
       page.should have_css('#element_160')
     end
