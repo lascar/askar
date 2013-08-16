@@ -14,13 +14,14 @@ describe "elements/list.html.haml" do
 
     it "get elements list with pagination" do
       visit '/elements/list?page=8' 
-      page.should have_css('.element_list', :count => 20)
+      expect(page).to have_css('.list_element', :count => 20)
+      #page.should have_css('.list_element', :count => 20)
     end
 
     it "get elements list with offset de page" do
       save_page('capy.html')
-      page.should have_css('#element_141')
-      page.should have_css('#element_160')
+      expect(page).to have_css('#element_141')
+      expect(page).to have_css('#element_160')
     end
     
     it "is some way to go one page back" do
@@ -52,6 +53,7 @@ describe "elements/list.html.haml" do
         end
       end
     end
+    puts "count elements : " + Element.count.to_s
   end
 end
 

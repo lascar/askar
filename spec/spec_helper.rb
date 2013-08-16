@@ -9,11 +9,11 @@ Spork.prefork do
   # need to restart spork for it take effect.
 
   # This file is copied to spec/ when you run 'rails generate rspec:install'
+  require "rails/application"
+  require File.expand_path("../../config/environment", __FILE__)
   ENV["RAILS_ENV"] ||= 'test'
   Spork.trap_method(Rails::Application, :reload_routes!)
   Spork.trap_method(Rails::Application::RoutesReloader, :reload!)
-  require "rails/application"
-  require File.expand_path("../../config/environment", __FILE__)
   require 'rack/handler/webrick'
   require 'rexml/document'
   require 'tzinfo/definitions/Etc/UTC'
@@ -37,6 +37,7 @@ Spork.prefork do
   require 'rspec/core/mocking/with_rspec'
   require 'rspec/core/formatters/progress_formatter'
   require 'rspec/core/formatters/base_text_formatter'
+  require 'rspec/core/formatters/documentation_formatter'
   require 'capybara/rspec'
   require 'capybara/rails'
   require 'selenium-webdriver'
