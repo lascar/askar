@@ -42,6 +42,7 @@ Spork.prefork do
   require 'capybara/rails'
   require 'selenium-webdriver'
   require 'selenium/webdriver/firefox/bridge'
+  require 'spork/forker.rb'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
@@ -93,17 +94,17 @@ Spork.prefork do
     client.timeout = 12 # <= Page Load Timeout value in seconds
     Capybara::Selenium::Driver.new(app, :browser => :firefox, :http_client => client)
   end
-  module Kernel
-    def require_with_trace(*args)
-      start = Time.now.to_f
-      @indent ||= 0
-      @indent += 2
-      require_without_trace(*args)
-      @indent -= 2
-      Kernel::puts "#{' '*@indent}#{((Time.now.to_f - start)*1000).to_i} #{args[0]}"
-    end
-    alias_method_chain :require, :trace
-  end
+  #module Kernel
+  #  def require_with_trace(*args)
+  #    start = Time.now.to_f
+  #    @indent ||= 0
+  #    @indent += 2
+  #    require_without_trace(*args)
+  #    @indent -= 2
+  #    Kernel::puts "#{' '*@indent}#{((Time.now.to_f - start)*1000).to_i} #{args[0]}"
+  #  end
+  #  alias_method_chain :require, :trace
+  #end
 
 end
 
