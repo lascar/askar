@@ -2,7 +2,7 @@
 - element_id_string = "element_" + element_id
 - element_name = element ? element.name : "0"
 - element_short_description = (!element or !element.short_description) ? 'no short description' : element.short_description
-.list_element{:id => element_id_string}
+%div{:id => element_id_string}
   .element_field{:id => element_id_string + '_name', :class => 'element_name'}= element_name
   .element_field{:id => element_id_string + '_short_description', :class => 'element_short_description'}= element_short_description
   .element_field{:id => element_id_string + '_show', :class => 'element_show'}= link_to 'Show', "/elements/show/" + element_id, :remote => true, :method => 'POST', :data => {:id => element_id}
