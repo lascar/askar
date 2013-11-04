@@ -1,0 +1,12 @@
+var fields = <%= fields.to_json.html_safe %>;
+var elements = <%= elements.to_json.html_safe %>;
+var controller = "<%= params[:controller] %>";
+var tab = $("<div id='tab_" + controller + "' class='tab'></div>");
+tab.text(controller);
+$("#tabs").append(tab);
+$.each(elements, function(index, element){
+  var element_raw = document.createElement("div");
+  $(element_raw).attr('id', "element_raw_" + element.id);
+  document.getElementById("tabs_contents").appendChild(element_raw);
+});
+console.log("toto");
