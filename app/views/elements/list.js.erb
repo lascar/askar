@@ -1,12 +1,20 @@
-var fields = <%= fields.to_json.html_safe %>;
-var elements = <%= elements.to_json.html_safe %>;
-var controller = "<%= params[:controller] %>";
-var tab = $("<div id='tab_" + controller + "' class='tab'></div>");
+/*jslint browser: true, nomen: true*/
+/*global $, jQuery*/
+// http://jsperf.com/jquery-vs-createelement
+// depiste of that we use a mixt with jquery for compatibility in browsers
+var fields = <%= fields.to_json.html_safe %>, elements = <%= elements.to_json.html_safe %>;
+var controller = "<%= params[:controller] %>", tab = $("<div id='tab_" + controller + "' class='tab'></div>");
+var element_raw, field_content_div;
 tab.text(controller);
 $("#tabs").append(tab);
-$.each(elements, function(index, element){
-  var element_raw = document.createElement("div");
-  $(element_raw).attr('id', "element_raw_" + element.id);
-  document.getElementById("tabs_contents").appendChild(element_raw);
+$.each(elements, function( index, element ) {
+  element_raw = $("<div id='element_raw_" + element.id + "'></div>");
+  $.each(fields, function( index, field ) {
+    field_content_div = $("<div id='" + controller + "_" + element.id + "_ " + field + "'></div>");
+    field_content_div.text(element[field]);
+    console.log(field_content_div);
+    element_raw.append(field_content_div);
+  });
+  $("#tabs_contents").append(element_raw);
 });
-console.log("toto");
+  
