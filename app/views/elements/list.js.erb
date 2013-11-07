@@ -9,10 +9,12 @@ var Elemental = {
     this.display_tab_content(this.controller, this.fields, this.elements);
   },
 
-  fields: <%= fields.to_json.html_safe %>,
-  elements: <%= elements.to_json.html_safe %>,
+  //this 2 lines are for jslint verification
   //fields: ["id", "name", "description"],
   //elements: [{id: 1, name: "toto"}, {id: 2, name: "tata"}],
+  //controller: "toto",
+  fields: <%= fields.to_json.html_safe %>,
+  elements: <%= elements.to_json.html_safe %>,
   controller: "<%= params[:controller] %>",
 
   //var element_raw, field_content_div;
@@ -24,6 +26,7 @@ var Elemental = {
   },
   display_tab_content: function (controller, fields, elements) {
     'use strict';
+    var tab_content = $("<div id='tab_content_" + controller + "' class='tab_content active'></div>");
     var element_raw, field_content_div;
     $.each(elements, function (index, element) {
       element_raw = $("<div id='element_raw_" + element.id + "'></div>");
@@ -32,7 +35,8 @@ var Elemental = {
         field_content_div.text(element[field]);
         element_raw.append(field_content_div);
       });
-      $("#tabs_contents").append(element_raw);
+      tab_content.append(element_raw);
+      $("#tabs_contents").append(tab_content);
     });
   }
 };
