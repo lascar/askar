@@ -1,7 +1,7 @@
 elemental
 =========
 
-where javascript is in charge to do the showbizz
+where javascript is in charge of the showbizz
 
 comunication between server and client mostly througth ajax and json
 
