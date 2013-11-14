@@ -10,9 +10,9 @@ class ElementsController < ApplicationController
   def list
     fields = ["id", "name", "description"]
     elements = Element.select(fields)
-
+    actions = ["show"]
     respond_to do |format|
-      format.js {render "elements/list.js.erb", locals: {fields: fields, elements:  elements}, layout: false}
+      format.js {render "elements/list.js.erb", locals: {fields: fields, elements: elements, actions: actions}, layout: false}
     end
   end
 

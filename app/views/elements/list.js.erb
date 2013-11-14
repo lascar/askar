@@ -9,36 +9,72 @@ var Elemental = {
     this.display_tab_content(this.controller, this.fields, this.elements);
   },
 
-  //this 2 lines are for jslint verification
+  //this 4 lines are for jslint verification
+  // puts as comment : s/^  /  \/\/
+  // uncomment : s/\/\///
   //fields: ["id", "name", "description"],
   //elements: [{id: 1, name: "toto"}, {id: 2, name: "tata"}],
   //controller: "toto",
+  //actions: ["show"],
   fields: <%= fields.to_json.html_safe %>,
   elements: <%= elements.to_json.html_safe %>,
   controller: "<%= params[:controller] %>",
+  actions: <%= actions.to_json.html_safe %>,
 
-  //var element_raw, field_content_div;
   display_tab: function (controller) {
     'use strict';
-    var tab = $("<div id='tab_" + controller + "' class='tab'></div>");
+    var tab = $("<div id='tab_" + controller + "' class='tab active'></div>");
     tab.text(controller);
     $("#tabs").append(tab);
   },
+
   display_tab_content: function (controller, fields, elements) {
     'use strict';
     var tab_content = $("<div id='tab_content_" + controller + "' class='tab_content active'></div>");
-    var element_raw, field_content_div;
+    var element_raw, field_content_div, link_action;
     $.each(elements, function (index, element) {
-      element_raw = $("<div id='element_raw_" + element.id + "'></div>");
+      element_raw = Elemental.raw_build(element.id);
       $.each(fields, function (index, field) {
-        field_content_div = $("<div id='" + controller + "_" + element.id + "_ " + field + "'></div>");
-        field_content_div.text(element[field]);
+        field_content_div = Elemental.field_build(controller, element, field);
         element_raw.append(field_content_div);
+      });
+      $.each(Elemental.actions, function (index, action) {
+        link_action = Elemental.build_link_action(controller, action, element);
+        element_raw.append(link_action);
       });
       tab_content.append(element_raw);
       $("#tabs_contents").append(tab_content);
     });
+  },
+
+  field_build: function (controller, element, field) {
+    'use strict';
+    var field_content_div = $("<div id='" + controller + "_" + element.id + "_ " + field + "'></div>");
+    field_content_div.addClass("field " + field);
+    field_content_div.text(element[field]);
+    return field_content_div;
+  },
+
+  raw_build: function (id) {
+    'use strict';
+    var element_raw = $("<div id='element_raw_" + id + "'></div>");
+    element_raw.addClass("element_raw");
+    return element_raw;
+  },
+
+  build_link_action: function (controller, action, element) {
+    'use strict';
+    var div_action, link_action;
+    div_action = $("<div id='" + controller + "_" + element.id + "_" + action + "'></div>");
+    link_action = $("<a id='link_" + controller + "_" + element.id + "_" + action + "'>" + action + "</a>");
+    link_action.addClass("link_" + controller + "_" + action);
+    div_action.append(link_action);
+    return div_action;
   }
+  //$.ajax({
+  //  url: controller + "/" + action + "/" + element.id,
+  //  type: "POST",
+  //  dataType: 'script'
 };
 
 Elemental.init_elemental();
