@@ -1,6 +1,6 @@
 Elemental::Application.routes.draw do
-  get '/elements', to: 'elements#index'
-  post '/elements/list', to: 'elements#list'
+  get '/home', to: 'home#index'
+  post '/home/list', to: 'home#list'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,5 +1,5 @@
-class ElementsController < ApplicationController
-  before_action :set_element, only: [:show, :edit, :update, :destroy]
+class HomeController < ApplicationController
+  #before_action :set_element, only: [:show, :edit, :update, :destroy]
 
   # GET /elements
   # GET /elements.json
@@ -12,7 +12,7 @@ class ElementsController < ApplicationController
     elements = Element.select(fields)
     actions = ["show"]
     respond_to do |format|
-      format.js {render "elements/list.js.erb", locals: {fields: fields, elements: elements, actions: actions}, layout: false}
+      format.js {render "home/list.js.erb", locals: {fields: fields, elements: elements, actions: actions}, layout: false}
     end
   end
 
