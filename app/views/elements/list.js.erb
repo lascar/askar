@@ -66,15 +66,22 @@ var Elemental = {
     'use strict';
     var div_action, link_action;
     div_action = $("<div id='" + controller + "_" + element.id + "_" + action + "'></div>");
+    div_action.addClass("div_link_" + controller + "_" + action + " field");
     link_action = $("<a id='link_" + controller + "_" + element.id + "_" + action + "'>" + action + "</a>");
     link_action.addClass("link_" + controller + "_" + action);
+    link_action.on('click', function () { Elemental.lauch_action(controller, action, element.id); });
     div_action.append(link_action);
     return div_action;
+  },
+
+  lauch_action: function (controller, action, element_id) {
+    'use strict';
+    $.ajax({
+      url: controller + "/" + action + "/" + element_id,
+      type: "POST",
+      dataType: 'script'
+    });
   }
-  //$.ajax({
-  //  url: controller + "/" + action + "/" + element.id,
-  //  type: "POST",
-  //  dataType: 'script'
 };
 
 Elemental.init_elemental();

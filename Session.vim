@@ -156,8 +156,6 @@ set guioptions=aegirLt
 set helplang=es
 set hidden
 set ignorecase
-set indentkeys=o,O,*<Return>,<>>,{,},0),0],o,O,!^F,=end,=else,=elsif,=rescue,=ensure,=when
-set iskeyword=@,48-57,_,192-255,$
 set laststatus=2
 set pastetoggle=<F5>
 set printoptions=paper:a4
@@ -183,15 +181,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +1 app/assets/javascripts/elements.js
-badd +15 app/assets/javascripts/application.js
-badd +6 app/views/layouts/application.html.haml
-badd +36 app/views/elements/list.js.erb
-badd +28 Gemfile
-badd +3 app/assets/stylesheets/elements.css.scss
+badd +0 app/controllers/elements_controller.rb
+badd +0 app/views/elements/list.js.erb
 badd +0 app/assets/stylesheets/application.css.scss
-args app/assets/javascripts/elements.js
-edit app/assets/stylesheets/application.css.scss
+args app/controllers/elements_controller.rb app/views/elements/list.js.erb app/assets/stylesheets/application.css.scss
+edit app/controllers/elements_controller.rb
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -202,13 +196,22 @@ let s:cpo_save=&cpo
 set cpo&vim
 nmap <buffer> gf <Plug>RailsTabFind
 nmap <buffer> f <Plug>RailsSplitFind
+nnoremap <buffer> <silent> g} :exe        "ptjump =RubyCursorIdentifier()"
+nnoremap <buffer> <silent> } :exe          "ptag =RubyCursorIdentifier()"
+nnoremap <buffer> <silent> g] :exe      "stselect =RubyCursorIdentifier()"
+nnoremap <buffer> <silent> g :exe        "stjump =RubyCursorIdentifier()"
+nnoremap <buffer> <silent>  :exe v:count1."stag =RubyCursorIdentifier()"
+nnoremap <buffer> <silent> ] :exe v:count1."stag =RubyCursorIdentifier()"
+nnoremap <buffer> <silent>  :exe  v:count1."tag =RubyCursorIdentifier()"
 nmap <buffer> gf <Plug>RailsFind
+nnoremap <buffer> <silent> g] :exe       "tselect =RubyCursorIdentifier()"
+nnoremap <buffer> <silent> g :exe         "tjump =RubyCursorIdentifier()"
 let &cpo=s:cpo_save
 unlet s:cpo_save
 setlocal keymap=
 setlocal noarabic
 setlocal autoindent
-setlocal balloonexpr=
+setlocal balloonexpr=RubyBalloonexpr()
 setlocal nobinary
 setlocal bufhidden=
 setlocal buflisted
@@ -218,25 +221,25 @@ setlocal cinkeys=0{,0},0),:,0#,!^F,o,O,e
 setlocal cinoptions=
 setlocal cinwords=if,else,while,do,for,switch
 setlocal colorcolumn=
-setlocal comments=s1:/*,mb:*,ex:*/,://,b:#,:%,:XCOMM,n:>,fb:-
-setlocal commentstring=//\ %s
+setlocal comments=:#
+setlocal commentstring=#\ %s
 setlocal complete=.,w,b,u,t,i
 setlocal concealcursor=
 setlocal conceallevel=0
-setlocal completefunc=
+setlocal completefunc=syntaxcomplete#Complete
 setlocal nocopyindent
 setlocal cryptmethod=
 setlocal nocursorbind
 setlocal nocursorcolumn
 setlocal nocursorline
-setlocal define=^\\s*\\%(@mixin\\|=\\)
+setlocal define=^\\s*def\\s\\+\\(self\\.\\)\\=
 setlocal dictionary=
 setlocal nodiff
 setlocal equalprg=
 setlocal errorformat=
 setlocal expandtab
-if &filetype != 'scss'
-setlocal filetype=scss
+if &filetype != 'ruby'
+setlocal filetype=ruby
 endif
 setlocal foldcolumn=0
 setlocal foldenable
@@ -249,18 +252,18 @@ setlocal foldminlines=1
 setlocal foldnestmax=20
 setlocal foldtext=foldtext()
 setlocal formatexpr=
-setlocal formatoptions=tcq
+setlocal formatoptions=croql
 setlocal formatlistpat=^\\s*\\d\\+[\\]:.)}\\t\ ]\\s*
 setlocal grepprg=
 setlocal iminsert=2
 setlocal imsearch=2
-setlocal include=^\\s*@import\\s\\+\\%(url(\\)\\=[\"']\\=
+setlocal include=^\\s*\\<\\(load\\|w*require\\)\\>
 setlocal includeexpr=RailsIncludeexpr()
-setlocal indentexpr=GetCSSIndent()
-setlocal indentkeys=0{,0},!^F,o,O
+setlocal indentexpr=GetRubyIndent()
+setlocal indentkeys=0{,0},0),0],!^F,o,O,e,=end,=elsif,=when,=ensure,=rescue,==begin,==end
 setlocal noinfercase
-setlocal iskeyword=@,48-57,_,192-255,$
-setlocal keywordprg=
+setlocal iskeyword=@,48-57,_,192-255
+setlocal keywordprg=ri
 setlocal nolinebreak
 setlocal nolisp
 setlocal nolist
@@ -272,8 +275,14 @@ setlocal nrformats=octal,hex
 set number
 setlocal number
 setlocal numberwidth=4
-setlocal omnifunc=csscomplete#CompleteCSS
-setlocal path=.,lib,vendor,app/models/concerns,app/controllers/concerns,app/controllers,app/helpers,app/mailers,app/models,app/*,app/views,app/views/application,public,test,test/unit,test/functional,test/integration,test/controllers,test/helpers,test/mailers,test/models,vendor/plugins/*/lib,vendor/plugins/*/test,vendor/rails/*/lib,vendor/rails/*/test,~/elemental,/usr/include,
+setlocal omnifunc=rubycomplete#Complete
+setlocal path=.,lib,vendor,app/models/concerns,app/controllers/concerns,app/controllers,app/helpers,app/mailers,app/models,app/*,app/views,app/views/elements,public,test,test/unit,test/functional,test/integration,test/controllers,test/helpers,test/mailers,test/models,vendor/plugins/*/lib,vendor/plugins/*/test,vendor/rails/*/lib,vendor/rails/*/test,~/elemental,NOTE:\\\ Gem.all_load_paths\\\ is\\\ deprecated\\\ with\\\ no\\\ replacement.\\\ It\\\ will\\\ be\\\ removed\\\ on\\\ or\\\ after\\\ 2011-10-01.\
+Gem.all_load_paths\\\ called\\\ from\\\ -e:1.\
+NOTE:\\\ Gem.all_partials\\\ is\\\ deprecated\\\ with\\\ no\\\ replacement.\\\ It\\\ will\\\ be\\\ removed\\\ on\\\ or\\\ after\\\ 2011-10-01.\
+Gem.all_partials\\\ called\\\ from\\\ ~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1/rubygems.rb:261.\
+NOTE:\\\ Gem.all_partials\\\ is\\\ deprecated\\\ with\\\ no\\\ replacement.\\\ It\\\ will\\\ be\\\ removed\\\ on\\\ or\\\ after\\\ 2011-10-01.\
+Gem.all_partials\\\ called\\\ from\\\ ~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1/rubygems.rb:261.\
+/home/pascal/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1/x86_64-linux,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby/1.9.1/x86_64-linux,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/x86_64-linux,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/actionmailer-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/actionpack-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/activemodel-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/activerecord-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/activerecord-deprecated_finders-1.0.3/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/activesupport-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/arel-4.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/atomic-1.1.14/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/builder-3.1.4/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/chunky_png-1.2.9/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/coffee-rails-4.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/coffee-script-2.2.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/coffee-script-source-1.6.3/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/columnize-0.3.6/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/compass-0.12.2/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/compass-rails-2.0.alpha.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/debugger-1.6.2/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/debugger-linecache-1.2.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/debugger-ruby_core_source-1.2.3/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/erubis-2.7.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/execjs-2.0.2/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/fssm-0.2.10/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/haml-4.0.3/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/haml-contrib-1.0.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/haml-rails-0.4/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/hike-1.2.3/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/hpricot-0.8.6/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/html2haml-1.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/i18n-0.6.5/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/jbuilder-1.5.2/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/jquery-rails-3.0.4/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/json-1.8.1/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/mail-2.5.4/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/mime-types-1.25/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/minitest-4.7.5/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/multi_json-1.8.2/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/polyglot-0.3.3/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/rack-1.5.2/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/rack-test-0.6.2/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/rails-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/railties-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@elemental/gems/rake-10.1.0/lib,~/.rvm/gem
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -291,14 +300,14 @@ setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en
 setlocal statusline=
-setlocal suffixesadd=.sass,.scss,.css
+setlocal suffixesadd=.rb
 setlocal swapfile
 setlocal synmaxcol=3000
-if &syntax != 'scss'
-setlocal syntax=scss
+if &syntax != 'ruby'
+setlocal syntax=ruby
 endif
 setlocal tabstop=2
-setlocal tags=~/elemental/tags,~/elemental/tmp/tags,~/elemental/.git/scss.tags,~/elemental/.git/tags,./tags,./TAGS,tags,TAGS
+setlocal tags=~/elemental/tags,~/elemental/tmp/tags,~/elemental/.git/ruby.tags,~/elemental/.git/tags,./tags,./TAGS,tags,TAGS
 setlocal textwidth=0
 setlocal thesaurus=
 setlocal undofile

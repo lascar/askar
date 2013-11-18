@@ -45,16 +45,20 @@
     clear:both;
     .field{
       float:left;
-      padding: 10px;
+      padding: 5px;
     }
     .id{
-      width:20px;
+      width:40px;
+      margin-left:5px;
     }
     .name{
       width:200px;
     }
     .description{
       width:600px;
+    }
+    .div_link_elements_show{
+      width:40px;
     }
   }
 }
