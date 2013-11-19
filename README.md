@@ -1,6 +1,8 @@
 lascar
 =========
 
+don't look at any utility, it's only fun
+
 where javascript is in charge of the showbizz
 
 comunication between server and client mostly througth ajax and json
