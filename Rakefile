@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Elemental::Application.load_tasks
+Lascar::Application.load_tasks

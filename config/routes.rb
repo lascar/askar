@@ -1,4 +1,4 @@
-Elemental::Application.routes.draw do
+Lascar::Application.routes.draw do
   get '/home', to: 'home#index'
   post '/home/list', to: 'home#list'
 

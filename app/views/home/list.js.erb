@@ -2,8 +2,8 @@
 /*global $, jQuery*/
 // http://jsperf.com/jquery-vs-createelement
 // depiste of that we use a mixt with jquery for compatibility in browsers
-var Elemental = {
-  init_elemental: function () {
+var Lascar = {
+  init_lascar: function () {
     'use strict';
     this.display_tab(this.controller);
     this.display_tab_content(this.controller, this.fields, this.elements);
@@ -33,13 +33,13 @@ var Elemental = {
     var tab_content = $("<div id='tab_content_" + controller + "' class='tab_content active'></div>");
     var element_raw, field_content_div, link_action;
     $.each(elements, function (index, element) {
-      element_raw = Elemental.raw_build(element.id);
+      element_raw = Lascar.raw_build(element.id);
       $.each(fields, function (index, field) {
-        field_content_div = Elemental.field_build(controller, element, field);
+        field_content_div = Lascar.field_build(controller, element, field);
         element_raw.append(field_content_div);
       });
-      $.each(Elemental.actions, function (index, action) {
-        link_action = Elemental.build_link_action(controller, action, element);
+      $.each(Lascar.actions, function (index, action) {
+        link_action = Lascar.build_link_action(controller, action, element);
         element_raw.append(link_action);
       });
       tab_content.append(element_raw);
@@ -69,7 +69,7 @@ var Elemental = {
     div_action.addClass("div_link_" + controller + "_" + action + " field");
     link_action = $("<a id='link_" + controller + "_" + element.id + "_" + action + "'>" + action + "</a>");
     link_action.addClass("link_" + controller + "_" + action);
-    link_action.on('click', function () { Elemental.lauch_action(controller, action, element.id); });
+    link_action.on('click', function () { Lascar.lauch_action(controller, action, element.id); });
     div_action.append(link_action);
     return div_action;
   },
@@ -84,5 +84,5 @@ var Elemental = {
   }
 };
 
-Elemental.init_elemental();
+Lascar.init_lascar();
 

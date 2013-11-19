@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Elemental::Application.config.secret_key_base = '2db7dfe8aea4052cc9cb05a54011f2488b37294aa5609a213be22e77c6f6c2ee2e27488b68d3f1f54efbd9c13d273a3b578cc3b82381a9e10d092b7651208cf2'
+Lascar::Application.config.secret_key_base = '2db7dfe8aea4052cc9cb05a54011f2488b37294aa5609a213be22e77c6f6c2ee2e27488b68d3f1f54efbd9c13d273a3b578cc3b82381a9e10d092b7651208cf2'
