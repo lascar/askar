@@ -3,17 +3,18 @@ class HomeController < ApplicationController
   DEFAULT_ELEMENT = "element"
   PERMIDED_FIELDS = ["id", "name", "description"]
   DEFAULT_FIELDS = ["name", "description"]
+  PERMIDED_FIELDS_SHOW = ["id", "name", "description"]
+  DEFAULT_FIELDS_SHOW = ["id", "name", "description"]
   before_action :element_name_can_be, :field_names_can_be
 
-  # GET /elements
-  # GET /elements.json
   def index
-
   end
 
   def list
-    fields = params[:fields] || ["id", "name", "description"]
-    elements = Element.select(fields)
+    fields = params[:fields] || DEFAULT_FIELDS
+    element_name = params[:element_name]
+    element_model = element_name.contantize
+    elements = element_model.select(fields)
     actions = ["show"]
     respond_to do |format|
       format.js {render "home/list.js.erb", locals: {fields: fields, elements: elements, actions: actions}, layout: false}
@@ -21,6 +22,7 @@ class HomeController < ApplicationController
   end
 
   def show
+    fields = params[:fields] || DEFAULT_FIELDS_SHOW
     element_name = params[:element_name]
     render  "home/show.js.erb" 
   end
