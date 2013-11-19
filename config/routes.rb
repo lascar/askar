@@ -1,6 +1,7 @@
 Lascar::Application.routes.draw do
   get '/home', to: 'home#index'
-  post '/home/list', to: 'home#list'
+  post '/home/list/:element_name', to: 'home#list'
+  post '/home/show/:element_name/(:id)', to: 'home#show'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

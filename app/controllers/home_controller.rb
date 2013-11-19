@@ -1,5 +1,9 @@
 class HomeController < ApplicationController
-  #before_action :set_element, only: [:show, :edit, :update, :destroy]
+  PERMITED_ELEMENTS = ["element"]
+  DEFAULT_ELEMENT = "element"
+  PERMIDED_FIELDS = ["id", "name", "description"]
+  DEFAULT_FIELDS = ["name", "description"]
+  before_action :element_name_can_be, :field_names_can_be
 
   # GET /elements
   # GET /elements.json
@@ -8,7 +12,7 @@ class HomeController < ApplicationController
   end
 
   def list
-    fields = ["id", "name", "description"]
+    fields = params[:fields] || ["id", "name", "description"]
     elements = Element.select(fields)
     actions = ["show"]
     respond_to do |format|
@@ -16,14 +20,20 @@ class HomeController < ApplicationController
     end
   end
 
+  def show
+    element_name = params[:element_name]
+    render  "home/show.js.erb" 
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_element
-      @element = Element.find(params[:id])
+    def element_name_can_be
+      params[:element_name] = DEFAULT_ELEMENT unless PERMITED_ELEMENTS.include?(params[:element_name])
+    end
+    
+    def field_names_can_be
+      unless params[:field_names] and (PERMIDED_FIELDS & params[:field_names]).size == params[:field_names].size
+        params[:field_names] = ["name", "description"]
+      end
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def element_params
-      params.require(:element).permit(:name, :description)
-    end
 end

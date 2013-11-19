@@ -77,7 +77,7 @@ var Lascar = {
   lauch_action: function (controller, action, element_id) {
     'use strict';
     $.ajax({
-      url: controller + "/" + action + "/" + element_id,
+      url: controller + action + "/element/" + element_id,
       type: "POST",
       dataType: 'script'
     });

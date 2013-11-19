@@ -156,6 +156,8 @@ set guioptions=aegirLt
 set helplang=es
 set hidden
 set ignorecase
+set indentkeys=o,O,*<Return>,<>>,{,},0),0],o,O,!^F,=end,=else,=elsif,=rescue,=ensure,=when
+set iskeyword=@,48-57,_,192-255,$
 set laststatus=2
 set pastetoggle=<F5>
 set printoptions=paper:a4
@@ -181,31 +183,32 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +0 app/controllers/elements_controller.rb
-badd +0 app/views/elements/list.js.erb
-badd +0 app/assets/stylesheets/application.css.scss
-args app/controllers/elements_controller.rb app/views/elements/list.js.erb app/assets/stylesheets/application.css.scss
-edit app/controllers/elements_controller.rb
+badd +31 app/controllers/home_controller.rb
+badd +80 app/views/home/list.js.erb
+badd +3 config/routes.rb
+badd +14 app/views/layouts/application.html.haml
+args app/controllers/home_controller.rb app/views/home/list.js.erb config/routes.rb
+edit app/controllers/home_controller.rb
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
 argglobal
-let s:cpo_save=&cpo
-set cpo&vim
-nmap <buffer> gf <Plug>RailsTabFind
-nmap <buffer> f <Plug>RailsSplitFind
 nnoremap <buffer> <silent> g} :exe        "ptjump =RubyCursorIdentifier()"
 nnoremap <buffer> <silent> } :exe          "ptag =RubyCursorIdentifier()"
 nnoremap <buffer> <silent> g] :exe      "stselect =RubyCursorIdentifier()"
 nnoremap <buffer> <silent> g :exe        "stjump =RubyCursorIdentifier()"
 nnoremap <buffer> <silent>  :exe v:count1."stag =RubyCursorIdentifier()"
 nnoremap <buffer> <silent> ] :exe v:count1."stag =RubyCursorIdentifier()"
+let s:cpo_save=&cpo
+set cpo&vim
+nmap <buffer> gf <Plug>RailsTabFind
+nmap <buffer> f <Plug>RailsSplitFind
 nnoremap <buffer> <silent>  :exe  v:count1."tag =RubyCursorIdentifier()"
-nmap <buffer> gf <Plug>RailsFind
 nnoremap <buffer> <silent> g] :exe       "tselect =RubyCursorIdentifier()"
 nnoremap <buffer> <silent> g :exe         "tjump =RubyCursorIdentifier()"
+nmap <buffer> gf <Plug>RailsFind
 let &cpo=s:cpo_save
 unlet s:cpo_save
 setlocal keymap=
@@ -276,13 +279,13 @@ set number
 setlocal number
 setlocal numberwidth=4
 setlocal omnifunc=rubycomplete#Complete
-setlocal path=.,lib,vendor,app/models/concerns,app/controllers/concerns,app/controllers,app/helpers,app/mailers,app/models,app/*,app/views,app/views/elements,public,test,test/unit,test/functional,test/integration,test/controllers,test/helpers,test/mailers,test/models,vendor/plugins/*/lib,vendor/plugins/*/test,vendor/rails/*/lib,vendor/rails/*/test,~/lascar,NOTE:\\\ Gem.all_load_paths\\\ is\\\ deprecated\\\ with\\\ no\\\ replacement.\\\ It\\\ will\\\ be\\\ removed\\\ on\\\ or\\\ after\\\ 2011-10-01.\
+setlocal path=.,lib,vendor,app/models/concerns,app/controllers/concerns,app/controllers,app/helpers,app/mailers,app/models,app/*,app/views,app/views/home,public,test,test/unit,test/functional,test/integration,test/controllers,test/helpers,test/mailers,test/models,vendor/plugins/*/lib,vendor/plugins/*/test,vendor/rails/*/lib,vendor/rails/*/test,~/lascar,NOTE:\\\ Gem.all_load_paths\\\ is\\\ deprecated\\\ with\\\ no\\\ replacement.\\\ It\\\ will\\\ be\\\ removed\\\ on\\\ or\\\ after\\\ 2011-10-01.\
 Gem.all_load_paths\\\ called\\\ from\\\ -e:1.\
 NOTE:\\\ Gem.all_partials\\\ is\\\ deprecated\\\ with\\\ no\\\ replacement.\\\ It\\\ will\\\ be\\\ removed\\\ on\\\ or\\\ after\\\ 2011-10-01.\
 Gem.all_partials\\\ called\\\ from\\\ ~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1/rubygems.rb:261.\
 NOTE:\\\ Gem.all_partials\\\ is\\\ deprecated\\\ with\\\ no\\\ replacement.\\\ It\\\ will\\\ be\\\ removed\\\ on\\\ or\\\ after\\\ 2011-10-01.\
 Gem.all_partials\\\ called\\\ from\\\ ~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1/rubygems.rb:261.\
-/home/pascal/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1/x86_64-linux,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby/1.9.1/x86_64-linux,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/x86_64-linux,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/actionmailer-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/actionpack-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activemodel-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activerecord-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activerecord-deprecated_finders-1.0.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activesupport-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/arel-4.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/atomic-1.1.14/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/builder-3.1.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/chunky_png-1.2.9/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/coffee-rails-4.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/coffee-script-2.2.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/coffee-script-source-1.6.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/columnize-0.3.6/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/compass-0.12.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/compass-rails-2.0.alpha.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/debugger-1.6.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/debugger-linecache-1.2.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/debugger-ruby_core_source-1.2.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/erubis-2.7.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/execjs-2.0.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/fssm-0.2.10/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/haml-4.0.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/haml-contrib-1.0.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/haml-rails-0.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/hike-1.2.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/hpricot-0.8.6/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/html2haml-1.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/i18n-0.6.5/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/jbuilder-1.5.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/jquery-rails-3.0.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/json-1.8.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/mail-2.5.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/mime-types-1.25/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/minitest-4.7.5/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/multi_json-1.8.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/polyglot-0.3.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/rack-1.5.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/rack-test-0.6.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/rails-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/railties-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/rake-10.1.0/lib,~/.rvm/gem
+/home/pascal/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby/1.9.1/x86_64-linux,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/site_ruby,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby/1.9.1/x86_64-linux,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/vendor_ruby,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1,~/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/x86_64-linux,~/.rvm/gems/ruby-1.9.3-p327@global/gems/bundler-1.3.5/lib,~/.rvm/gems/ruby-1.9.3-p327@global/gems/bundler-unload-1.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@global/gems/rake-10.0.4/lib,~/.rvm/gems/ruby-1.9.3-p327@global/gems/rubygems-bundler-1.2.0/lib,~/.rvm/gems/ruby-1.9.3-p327@global/gems/rvm-1.11.3.8/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/actionmailer-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/actionpack-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activemodel-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activerecord-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activerecord-deprecated_finders-1.0.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/activesupport-4.0.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/arel-4.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/atomic-1.1.14/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/builder-3.1.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/chunky_png-1.2.9/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/coffee-rails-4.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/coffee-script-2.2.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/coffee-script-source-1.6.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/columnize-0.3.6/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/compass-0.12.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/compass-rails-2.0.alpha.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/debugger-1.6.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/debugger-linecache-1.2.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/debugger-ruby_core_source-1.2.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/erubis-2.7.0/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/execjs-2.0.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/fssm-0.2.10/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/haml-4.0.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/haml-contrib-1.0.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/haml-rails-0.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/hike-1.2.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/hpricot-0.8.6/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/html2haml-1.0.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/i18n-0.6.5/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/jbuilder-1.5.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/jquery-rails-3.0.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/json-1.8.1/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/mail-2.5.4/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/mime-types-1.25/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/minitest-4.7.5/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/multi_json-1.8.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/polyglot-0.3.3/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/rack-1.5.2/lib,~/.rvm/gems/ruby-1.9.3-p327@lascar/gems/rack-test-0.6.2/lib,~/.rvm/gems
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -316,12 +319,12 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-let s:l = 1 - ((0 * winheight(0) + 25) / 50)
+let s:l = 33 - ((32 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
-normal! 0
+33
+normal! 0124l
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
