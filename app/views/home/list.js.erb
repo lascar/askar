@@ -6,7 +6,7 @@ var Lascar = {
   init_lascar: function () {
     'use strict';
     this.display_tab(this.controller);
-    this.display_tab_content(this.controller, this.fields, this.elements);
+    this.display_tab_content(this.controller, this.fields, this.fields_to_show, this.elements);
   },
 
   //this 4 lines are for jslint verification
@@ -17,6 +17,7 @@ var Lascar = {
   //controller: "toto",
   //actions: ["show"],
   fields: <%= fields.to_json.html_safe %>,
+  fields_to_show: <%= fields_to_show.to_json.html_safe %>,
   elements: <%= elements.to_json.html_safe %>,
   controller: "<%= params[:controller] %>",
   actions: <%= actions.to_json.html_safe %>,
@@ -28,13 +29,13 @@ var Lascar = {
     $("#tabs").append(tab);
   },
 
-  display_tab_content: function (controller, fields, elements) {
+  display_tab_content: function (controller, fields, fields_to_show, elements) {
     'use strict';
     var tab_content = $("<div id='tab_content_" + controller + "' class='tab_content active'></div>");
     var element_raw, field_content_div, link_action;
     $.each(elements, function (index, element) {
       element_raw = Lascar.raw_build(element.id);
-      $.each(fields, function (index, field) {
+      $.each(fields_to_show, function (index, field) {
         field_content_div = Lascar.field_build(controller, element, field);
         element_raw.append(field_content_div);
       });
@@ -77,7 +78,7 @@ var Lascar = {
   lauch_action: function (controller, action, element_id) {
     'use strict';
     $.ajax({
-      url: controller + action + "/element/" + element_id,
+      url: controller + "/" + action + "/element/" + element_id,
       type: "POST",
       dataType: 'script'
     });

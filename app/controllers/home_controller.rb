@@ -1,10 +1,8 @@
 class HomeController < ApplicationController
   PERMITED_ELEMENTS = ["element"]
   DEFAULT_ELEMENT = "element"
-  PERMIDED_FIELDS = ["id", "name", "description"]
-  DEFAULT_FIELDS = ["name", "description"]
-  PERMIDED_FIELDS_SHOW = ["id", "name", "description"]
-  DEFAULT_FIELDS_SHOW = ["id", "name", "description"]
+  PERMITED_FIELDS = ["id", "name", "description"]
+  DEFAULT_FIELDS = ["id", "name", "description"]
   before_action :element_name_can_be, :field_names_can_be
 
   def index
@@ -12,19 +10,22 @@ class HomeController < ApplicationController
 
   def list
     fields = params[:fields] || DEFAULT_FIELDS
+    fields_to_show = params[:field_to_show] || DEFAULT_FIELDS - ["id"]
     element_name = params[:element_name]
-    element_model = element_name.contantize
+    element_model = element_name.camelize.constantize
     elements = element_model.select(fields)
     actions = ["show"]
     respond_to do |format|
-      format.js {render "home/list.js.erb", locals: {fields: fields, elements: elements, actions: actions}, layout: false}
+      format.js {render "home/list.js.erb", locals: {fields: fields, fields_to_show: fields_to_show, elements: elements, actions: actions}, layout: false}
     end
   end
 
   def show
-    fields = params[:fields] || DEFAULT_FIELDS_SHOW
+    fields = params[:fields] || DEFAULT_FIELDS
     element_name = params[:element_name]
-    render  "home/show.js.erb" 
+    element_model = element_name.camelize.constantize
+    element = element_model.find(params[:id])
+    render  "home/show.js.erb", locals: {fields: fields, element: element}
   end
 
   private
@@ -33,7 +34,7 @@ class HomeController < ApplicationController
     end
     
     def field_names_can_be
-      unless params[:field_names] and (PERMIDED_FIELDS & params[:field_names]).size == params[:field_names].size
+      unless params[:field_names] and (PERMITED_FIELDS & params[:field_names]).size == params[:field_names].size
         params[:field_names] = ["name", "description"]
       end
     end

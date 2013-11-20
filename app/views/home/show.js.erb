@@ -1,0 +1,10 @@
+/*jslint browser: true, nomen: true*/
+/*global $, jQuery*/
+Lascar.fields = <%= fields.to_json.html_safe %>;
+Lascar.element = <%= element.to_json.html_safe %>;
+
+Lascar.show_init = function () {
+  console.log(this.fields);
+  console.log(this.element);
+}
+Lascar.show_init();
