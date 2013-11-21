@@ -4,11 +4,17 @@ Lascar.fields = <%= fields.to_json.html_safe %>;
 Lascar.fields_to_show = <%= fields_to_show.to_json.html_safe %>;
 Lascar.element_name = <%= element_name.to_json.html_safe %>;
 Lascar.element = <%= element.to_json.html_safe %>;
+Lascar.action = "show"
 
 Lascar.show_init = function () {
-  console.log(this.fields);
-  console.log(this.fields_to_show);
-  console.log(this.element);
-  console.log(this.element_name);
+  Lascar.desactiveTabs();
+  Lascar.displayTab(Lascar.action, Lascar.element_name);
 }
+
+Lascar.desactiveTabs = function () {
+  $(".tab").removeClass("active");
+  $(".tab_content").removeClass("active").addClass("inactive");
+}
+
 Lascar.show_init();
+
