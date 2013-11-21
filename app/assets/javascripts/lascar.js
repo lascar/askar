@@ -6,7 +6,8 @@ var Lascar = {
   displayTab: function (action, element_name) {
     'use strict';
     Lascar.desactiveTabs();
-    var tab = $("<div id='tab_" + action + "_" + element_name + "' class='tab active'></div>");
+    var tab = $("<div id='tab_" + action + "_" + element_name + "'></div>");
+    tab.addClass('tab active');
     tab.html(action + "<br>" + element_name);
     $("#tabs").append(tab);
   },
@@ -16,9 +17,9 @@ var Lascar = {
     $(".tab_content").removeClass("active").addClass("inactive");
   },
 
-  displayTabContentList: function (element_name, fields, fields_to_show, elements) {
+  displayTabContent: function (action, element_name, fields, fields_to_show, elements) {
     'use strict';
-    var tab_content = $("<div id='tab_content_" + element_name + "' class='tab_content active'></div>");
+    var tab_content = $("<div id='tab_content_" + action + "_" + element_name + "' class='tab_content active'></div>");
     var element_raw, field_content_div, link_action;
     $.each(elements, function (index, element) {
       element_raw = Lascar.rawBuild(element.id);
