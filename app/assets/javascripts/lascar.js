@@ -3,14 +3,20 @@
 // http://jsperf.com/jquery-vs-createelement
 // depiste of that we use a mixt with jquery for compatibility in browsers
 var Lascar = {
-  displayTab: function (element_action, element_name) {
+  displayTab: function (action, element_name) {
     'use strict';
-    var tab = $("<div id='tab_" + element_action + "_" +element_name + "' class='tab active'></div>");
-    tab.html(element_action + "<br>" + element_name);
+    Lascar.desactiveTabs();
+    var tab = $("<div id='tab_" + action + "_" + element_name + "' class='tab active'></div>");
+    tab.html(action + "<br>" + element_name);
     $("#tabs").append(tab);
   },
 
-  displayTabContent: function (element_name, fields, fields_to_show, elements) {
+  desactiveTabs: function () {
+    $(".tab").removeClass("active");
+    $(".tab_content").removeClass("active").addClass("inactive");
+  },
+
+  displayTabContentList: function (element_name, fields, fields_to_show, elements) {
     'use strict';
     var tab_content = $("<div id='tab_content_" + element_name + "' class='tab_content active'></div>");
     var element_raw, field_content_div, link_action;

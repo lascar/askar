@@ -7,13 +7,7 @@ Lascar.element = <%= element.to_json.html_safe %>;
 Lascar.action = "show"
 
 Lascar.show_init = function () {
-  Lascar.desactiveTabs();
   Lascar.displayTab(Lascar.action, Lascar.element_name);
-}
-
-Lascar.desactiveTabs = function () {
-  $(".tab").removeClass("active");
-  $(".tab_content").removeClass("active").addClass("inactive");
 }
 
 Lascar.show_init();
