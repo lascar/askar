@@ -5,8 +5,13 @@
 var Lascar = {
   init_lascar: function () {
     'use strict';
-    this.display_tab(this.controller);
-    this.display_tab_content(this.controller, this.fields, this.fields_to_show, this.elements);
+    this.display_tab(this.element_name);
+    this.display_tab_content(this.element_name, this.fields, this.fields_to_show, this.elements);
+    console.log(this.fields);
+    console.log(this.fields_to_show);
+    console.log(this.element_name);
+    console.log(this.elements);
+    console.log(this.actions);
   },
 
   //this 4 lines are for jslint verification
@@ -14,33 +19,33 @@ var Lascar = {
   // uncomment : s/\/\///
   //fields: ["id", "name", "description"],
   //elements: [{id: 1, name: "toto"}, {id: 2, name: "tata"}],
-  //controller: "toto",
+  //element_name: "toto",
   //actions: ["show"],
   fields: <%= fields.to_json.html_safe %>,
   fields_to_show: <%= fields_to_show.to_json.html_safe %>,
+  element_name: <%= element_name.to_json.html_safe %>,
   elements: <%= elements.to_json.html_safe %>,
-  controller: "<%= params[:controller] %>",
   actions: <%= actions.to_json.html_safe %>,
 
-  display_tab: function (controller) {
+  display_tab: function (element_name) {
     'use strict';
-    var tab = $("<div id='tab_" + controller + "' class='tab active'></div>");
-    tab.text(controller);
+    var tab = $("<div id='tab_" + element_name + "' class='tab active'></div>");
+    tab.text(element_name);
     $("#tabs").append(tab);
   },
 
-  display_tab_content: function (controller, fields, fields_to_show, elements) {
+  display_tab_content: function (element_name, fields, fields_to_show, elements) {
     'use strict';
-    var tab_content = $("<div id='tab_content_" + controller + "' class='tab_content active'></div>");
+    var tab_content = $("<div id='tab_content_" + element_name + "' class='tab_content active'></div>");
     var element_raw, field_content_div, link_action;
     $.each(elements, function (index, element) {
       element_raw = Lascar.raw_build(element.id);
       $.each(fields_to_show, function (index, field) {
-        field_content_div = Lascar.field_build(controller, element, field);
+        field_content_div = Lascar.field_build(element_name, element, field);
         element_raw.append(field_content_div);
       });
       $.each(Lascar.actions, function (index, action) {
-        link_action = Lascar.build_link_action(controller, action, element);
+        link_action = Lascar.build_link_action(element_name, action, element);
         element_raw.append(link_action);
       });
       tab_content.append(element_raw);
@@ -48,9 +53,9 @@ var Lascar = {
     });
   },
 
-  field_build: function (controller, element, field) {
+  field_build: function (element_name, element, field) {
     'use strict';
-    var field_content_div = $("<div id='" + controller + "_" + element.id + "_ " + field + "'></div>");
+    var field_content_div = $("<div id='" + element_name + "_" + element.id + "_ " + field + "'></div>");
     field_content_div.addClass("field " + field);
     field_content_div.text(element[field]);
     return field_content_div;
@@ -63,22 +68,22 @@ var Lascar = {
     return element_raw;
   },
 
-  build_link_action: function (controller, action, element) {
+  build_link_action: function (element_name, action, element) {
     'use strict';
     var div_action, link_action;
-    div_action = $("<div id='" + controller + "_" + element.id + "_" + action + "'></div>");
-    div_action.addClass("div_link_" + controller + "_" + action + " field");
-    link_action = $("<a id='link_" + controller + "_" + element.id + "_" + action + "'>" + action + "</a>");
-    link_action.addClass("link_" + controller + "_" + action);
-    link_action.on('click', function () { Lascar.lauch_action(controller, action, element.id); });
+    div_action = $("<div id='" + element_name + "_" + element.id + "_" + action + "'></div>");
+    div_action.addClass("div_link_" + element_name + "_" + action + " field");
+    link_action = $("<a id='link_" + element_name + "_" + element.id + "_" + action + "'>" + action + "</a>");
+    link_action.addClass("link_" + element_name + "_" + action);
+    link_action.on('click', function () { Lascar.lauch_action(element_name, action, element.id); });
     div_action.append(link_action);
     return div_action;
   },
 
-  lauch_action: function (controller, action, element_id) {
+  lauch_action: function (element_name, action, element_id) {
     'use strict';
     $.ajax({
-      url: controller + "/" + action + "/element/" + element_id,
+      url: element_name + "/" + action + "/element/" + element_id,
       type: "POST",
       dataType: 'script'
     });
