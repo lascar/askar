@@ -6,6 +6,7 @@ class HomeController < ApplicationController
   before_action :element_name_can_be, :field_names_can_be
 
   def index
+    render :index
   end
 
   def list
