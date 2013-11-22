@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+class ElementsController < ApplicationController
   PERMITED_ELEMENTS = ["element"]
   DEFAULT_ELEMENT = "element"
   PERMITED_FIELDS = ["id", "name", "description"]
@@ -16,7 +16,7 @@ class HomeController < ApplicationController
     element_model = element_name.camelize.constantize
     elements = element_model.select(fields)
     actions = ["show"]
-    render "home/list.js.erb", locals: {fields: fields, fields_to_show: fields_to_show, element_name: element_name, elements: elements, actions: actions}
+    render "elements/list.js.erb", locals: {fields: fields, fields_to_show: fields_to_show, element_name: element_name, elements: elements, actions: actions}
   end
 
   def show
@@ -25,7 +25,7 @@ class HomeController < ApplicationController
     element_name = params[:element_name]
     element_model = element_name.camelize.constantize
     element = element_model.select(fields).find(params[:id])
-    render  "home/show.js.erb", locals: {fields: fields, fields_to_show: fields_to_show, element_name: element_name, element: element}
+    render  "elements/show.js.erb", locals: {fields: fields, fields_to_show: fields_to_show, element_name: element_name, element: element}
   end
 
   private

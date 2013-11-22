@@ -14,12 +14,14 @@ Lascar.fields = <%= fields.to_json.html_safe %>;
 Lascar.fields_to_show = <%= fields_to_show.to_json.html_safe %>;
 Lascar.element_name = <%= element_name.to_json.html_safe %>;
 Lascar.elements = <%= elements.to_json.html_safe %>;
-Lascar.action = "list";
+Lascar.controller = "<%= params[:controller] %>";
+Lascar.action = "<%= params[:action] %>";
 Lascar.actions = <%= actions.to_json.html_safe %>;
 Lascar.initList = function () {
   'use strict';
-  Lascar.displayTab(Lascar.action, Lascar.element_name);
-  Lascar.displayTabContent(Lascar.action, Lascar.element_name, Lascar.fields, Lascar.fields_to_show, Lascar.elements);
+  Lascar.displayTab(Lascar.controller, Lascar.action, Lascar.element_name);
+  Lascar.displayTabContent(Lascar.controller, Lascar.action, Lascar.element_name, Lascar.fields, Lascar.fields_to_show, Lascar.elements);
 }
+
 Lascar.initList();
 

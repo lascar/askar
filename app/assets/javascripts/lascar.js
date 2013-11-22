@@ -3,32 +3,33 @@
 // http://jsperf.com/jquery-vs-createelement
 // depiste of that we use a mixt with jquery for compatibility in browsers
 var Lascar = {
-  displayTab: function (action, element_name) {
+  displayTab: function () {
     'use strict';
     Lascar.desactiveTabs();
-    var tab = $("<div id='tab_" + action + "_" + element_name + "'></div>");
+    var tab = $("<div id='tab_" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element_name + "'></div>");
     tab.addClass('tab active');
-    tab.html(action + "<br>" + element_name);
+    tab.html(Lascar.controller + "<br>" + Lascar.action + "<br>" + Lascar.element_name);
     $("#tabs").append(tab);
   },
 
   desactiveTabs: function () {
+    'use strict';
     $(".tab").removeClass("active");
     $(".tab_content").removeClass("active").addClass("inactive");
   },
 
-  displayTabContent: function (action, element_name, fields, fields_to_show, elements) {
+  displayTabContent: function () {
     'use strict';
-    var tab_content = $("<div id='tab_content_" + action + "_" + element_name + "' class='tab_content active'></div>");
+    var tab_content = $("<div id='tab_content_" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element_name + "' class='tab_content active'></div>");
     var element_raw, field_content_div, link_action;
-    $.each(elements, function (index, element) {
+    $.each(Lascar.elements, function (index, element) {
       element_raw = Lascar.rawBuild(element.id);
-      $.each(fields_to_show, function (index, field) {
-        field_content_div = Lascar.fieldBuild(element_name, element, field);
+      $.each(Lascar.fields_to_show, function (index, field) {
+        field_content_div = Lascar.fieldBuild(element, field);
         element_raw.append(field_content_div);
       });
       $.each(Lascar.actions, function (index, action) {
-        link_action = Lascar.buildLinkAction(element_name, action, element);
+        link_action = Lascar.buildLinkAction(element, action);
         element_raw.append(link_action);
       });
       tab_content.append(element_raw);
@@ -36,9 +37,9 @@ var Lascar = {
     });
   },
 
-  fieldBuild: function (element_name, element, field) {
+  fieldBuild: function (element, field) {
     'use strict';
-    var field_content_div = $("<div id='" + element_name + "_" + element.id + "_ " + field + "'></div>");
+    var field_content_div = $("<div id='" + Lascar.controller + "_" + element.id + "_ " + field + "'></div>");
     field_content_div.addClass("field " + field);
     field_content_div.text(element[field]);
     return field_content_div;
@@ -51,24 +52,25 @@ var Lascar = {
     return element_raw;
   },
 
-  buildLinkAction: function (element_name, action, element) {
+  buildLinkAction: function (element, action) {
     'use strict';
     var div_action, link_action;
-    div_action = $("<div id='" + element_name + "_" + element.id + "_" + action + "'></div>");
-    div_action.addClass("div_link_" + element_name + "_" + action + " field");
-    link_action = $("<a id='link_" + element_name + "_" + element.id + "_" + action + "'>" + action + "</a>");
-    link_action.addClass("link_" + element_name + "_" + action);
-    link_action.on('click', function () { Lascar.lauchAction(element_name, action, element.id); });
+    div_action = $("<div id='div_link_" + Lascar.controller + "_" + action + "_" + element.id + "'></div>");
+    div_action.addClass("div_link_" + action + " field");
+    link_action = $("<a id='link_" + Lascar.controller + "_" + action + "_" + element.id + "'>" + action + "</a>");
+    link_action.addClass("link_" + action);
+    link_action.on('click', function () { Lascar.lauchAction(element.id, action); });
     div_action.append(link_action);
     return div_action;
   },
 
-  lauchAction: function (element_name, action, element_id) {
+  lauchAction: function (element_id, action) {
     'use strict';
     $.ajax({
-      url: "/home/" + action + "/" + element_name + "/" + element_id,
+      url: Lascar.controller + "/" + action + "/" + element_id,
       type: "POST",
       dataType: 'script'
     });
   }
 }
+

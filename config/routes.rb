@@ -1,13 +1,10 @@
 Lascar::Application.routes.draw do
-  get '/home', to: 'home#index'
-  post '/home/list/(:element_name)', to: 'home#list'
-  post '/home/show/:element_name/(:id)', to: 'home#show'
-
+  post ':controller/:action/(:id)'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'elements#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
