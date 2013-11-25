@@ -1,27 +1,37 @@
 /*jslint browser: true, nomen: true*/
 /*global $, jQuery*/
-// http://jsperf.com/jquery-vs-createelement
-// depiste of that we use a mixt with jquery for compatibility in browsers
 var Lascar = {
   displayTab: function () {
     'use strict';
-    Lascar.desactiveTabs();
-    var tab = $("<div id='tab_" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element_name + "'></div>");
-    tab.addClass('tab active');
-    tab.html(Lascar.controller + "<br>" + Lascar.action + "<br>" + Lascar.element_name);
-    $("#tabs").append(tab);
+    var suffix = "";
+    console.log("toto");
+    var tab = Lascar.createOrActiveNode("tab_", suffix, $("#tabs"));
+    tab.html(Lascar.controller + "<br>" + Lascar.action);
   },
 
-  desactiveTabs: function () {
-    'use strict';
-    $(".tab").removeClass("active");
-    $(".tab_content").removeClass("active").addClass("inactive");
+  createOrActiveNode: function (id_pref, id_suf, parent_node){
+    var class_node = parent_node.data("child");
+    $("." + class_node).removeClass("active").addClass("inactive");
+    node = $("#" + id_pref + Lascar.controller + "_" + Lascar.action + id_suf)
+    if (node.length < 1) {
+      node = $("<div id='" + id_pref + Lascar.controller + "_" + Lascar.action + id_suf + "'></div>");
+      parent_node.append(node);
+    }
+    node.addClass(class_node + " active");
+    console.log(class_node);
+    return node;
   },
 
-  displayTabContent: function () {
+  displayTabContentShow: function () {
     'use strict';
-    var tab_content = $("<div id='tab_content_" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element_name + "' class='tab_content active'></div>");
-    var element_raw, field_content_div, link_action;
+    var tab_content =  Lascar.createOrActiveNode("", "", $("#tabs_contents"));
+  },
+
+  displayTabContentList: function () {
+    'use strict';
+    var element_raw, field_content_div, link_action,
+      tab_content = Lascar.createOrActiveNode("", "", $("#tabs_contents"));
+    tab_content.addClass('tab_content');
     $.each(Lascar.elements, function (index, element) {
       element_raw = Lascar.rawBuild(element.id);
       $.each(Lascar.fields_to_show, function (index, field) {
@@ -33,13 +43,12 @@ var Lascar = {
         element_raw.append(link_action);
       });
       tab_content.append(element_raw);
-      $("#tabs_contents").append(tab_content);
     });
   },
 
   fieldBuild: function (element, field) {
     'use strict';
-    var field_content_div = $("<div id='" + Lascar.controller + "_" + element.id + "_ " + field + "'></div>");
+    var field_content_div = $("<div id='" + Lascar.controller + "_" + Lascar.action + "_" + element.id + "'></div>");
     field_content_div.addClass("field " + field);
     field_content_div.text(element[field]);
     return field_content_div;

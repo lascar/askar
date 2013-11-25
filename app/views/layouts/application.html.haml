@@ -6,8 +6,8 @@
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
   %body
-    #tabs
-    #tabs_contents
+    #tabs{"data-child" => "tab"}
+    #tabs_contents{"data-child" => "tab_content"}
 
 :javascript
   $.ajax({

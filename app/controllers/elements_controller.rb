@@ -1,9 +1,7 @@
 class ElementsController < ApplicationController
-  PERMITED_ELEMENTS = ["element"]
-  DEFAULT_ELEMENT = "element"
   PERMITED_FIELDS = ["id", "name", "description"]
   DEFAULT_FIELDS = ["id", "name", "description"]
-  before_action :element_name_can_be, :field_names_can_be
+  before_action :field_names_can_be
 
   def index
     render :index
@@ -12,20 +10,25 @@ class ElementsController < ApplicationController
   def list
     fields = params[:fields]
     fields_to_show = DEFAULT_FIELDS - ["id"]
-    element_name = params[:element_name]
+    element_name = params[:controller].singularize
     element_model = element_name.camelize.constantize
     elements = element_model.select(fields)
     actions = ["show"]
-    render "elements/list.js.erb", locals: {fields: fields, fields_to_show: fields_to_show, element_name: element_name, elements: elements, actions: actions}
+    locals = {fields: fields, fields_to_show: fields_to_show,
+              elements: elements, actions: actions}
+    render "elements/list.js.erb", locals: locals
   end
 
   def show
     fields = params[:fields] || DEFAULT_FIELDS
-    fields_to_show = DEFAULT_FIELDS - ["id"]
-    element_name = params[:element_name]
+    fields_to_show = fields
+    element_name = params[:controller].singularize
     element_model = element_name.camelize.constantize
     element = element_model.select(fields).find(params[:id])
-    render  "elements/show.js.erb", locals: {fields: fields, fields_to_show: fields_to_show, element_name: element_name, element: element}
+    actions = ["show"]
+    locals = {fields: fields, fields_to_show: fields_to_show,
+              element: element, actions: actions}
+    render  "elements/show.js.erb", locals: locals
   end
 
   private
