@@ -4,7 +4,8 @@ class ElementsController < ApplicationController
   before_action :field_names_can_be
 
   def index
-    render :index
+    #render :index
+    render :file => "layouts/application.html.haml", :layout => false
   end
 
   def list
