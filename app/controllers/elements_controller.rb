@@ -4,38 +4,15 @@ class ElementsController < ApplicationController
   before_action :field_names_can_be
 
   def index
-    #render :index
     render :file => "layouts/application.html.haml", :layout => false
   end
 
   def list
-    fields = params[:fields]
-    fields_to_show = DEFAULT_FIELDS - ["id"]
-    element_name = params[:controller].singularize
-    element_model = element_name.camelize.constantize
-    elements = element_model.select(fields)
-    controller = params[:controller]
-    action = params[:action]
-    actions = ["show"]
-    locals = {controller: controller, action: action,
-              fields: fields, fields_to_show: fields_to_show,
-              elements: elements, actions: actions}
-    render :json => locals.to_json
+    execute
   end
 
   def show
-    fields = params[:fields] || DEFAULT_FIELDS
-    fields_to_show = fields
-    element_name = params[:controller].singularize
-    element_model = element_name.camelize.constantize
-    element = element_model.select(fields).find(params[:id])
-    controller = params[:controller]
-    action = params[:action]
-    actions = ["show"]
-    locals = {controller: controller, action: action,
-              fields: fields, fields_to_show: fields_to_show,
-              element: element, actions: actions}
-    render :json => locals.to_json
+    execute
   end
 
   private
@@ -47,6 +24,29 @@ class ElementsController < ApplicationController
       unless params[:fields] and (PERMITED_FIELDS & params[:fields]).size == params[:fields].size
         params[:fields] = DEFAULT_FIELDS
       end
+    end
+
+    def execute
+      controller = params[:controller]
+      action = params[:action]
+      element_name = controller.singularize
+      element_model = element_name.camelize.constantize
+      fields = params[:fields]
+      fields_to_show = DEFAULT_FIELDS - ["id"]
+      case action
+      when "list"
+        element = nil
+        elements = element_model.select(fields)
+        actions = ["show"]
+      when "show"
+        element = element_model.find(params[:id])
+        elements = nil
+        actions = ["show"]
+      end
+      locals = {controller: controller, action: action,
+                fields: fields, fields_to_show: fields_to_show,
+                elements: elements, actions: actions}
+      render :json => locals.to_json
     end
 
 end
