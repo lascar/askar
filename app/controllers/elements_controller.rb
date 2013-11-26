@@ -16,10 +16,6 @@ class ElementsController < ApplicationController
   end
 
   private
-    def element_name_can_be
-      params[:element_name] = DEFAULT_ELEMENT unless PERMITED_ELEMENTS.include?(params[:element_name])
-    end
-    
     def field_names_can_be
       unless params[:fields] and (PERMITED_FIELDS & params[:fields]).size == params[:fields].size
         params[:fields] = DEFAULT_FIELDS
@@ -45,7 +41,7 @@ class ElementsController < ApplicationController
       end
       locals = {controller: controller, action: action,
                 fields: fields, fields_to_show: fields_to_show,
-                elements: elements, actions: actions}
+                elements: elements, element: element, actions: actions}
       render :json => locals.to_json
     end
 

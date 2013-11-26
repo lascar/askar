@@ -61,5 +61,17 @@
       width:40px;
     }
   }
+  .field_raw{
+    margin: 10px;
+    clear: both;
+    .label{
+      float: left;
+      margin-right: 10px;
+      width: 20%;
+      }
+    .text{
+      float: left;
+    }
+  }
 }
 
