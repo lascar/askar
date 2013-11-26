@@ -1,10 +1,39 @@
 /*jslint browser: true, nomen: true*/
 /*global $, jQuery*/
 var Lascar = {
+  readResponse: function (data) {
+    Lascar.controller = data.controller;
+    Lascar.action = data.action;
+    Lascar.elements = data.elements;
+    Lascar.fields = data.fields;
+    Lascar.fields_to_show = data.fields_to_show;
+    Lascar.element = data.element;
+    Lascar.actions = data.actions;
+    Lascar.executeResponse(Lascar.action);
+  },
+  executeResponse: function (action) {
+    "use strict";
+    var actions = {
+      'list': function () {return Lascar.displayList(); },
+      'show': function () {return Lascar.displayShow(); }
+    };
+    try {return actions[action](); }
+    catch(err) {return false; }
+  },
+
+  displayList: function () {
+    Lascar.displayTab();
+    Lascar.displayTabContentList();
+  },
+
+  displayShow: function () {
+    Lascar.displayTab();
+    Lascar.displayTabContentShow();
+  },
+
   displayTab: function () {
     'use strict';
     var suffix = "";
-    console.log("toto");
     var tab = Lascar.createOrActiveNode("tab_", suffix, $("#tabs"));
     tab.html(Lascar.controller + "<br>" + Lascar.action);
   },
@@ -18,7 +47,6 @@ var Lascar = {
       parent_node.append(node);
     }
     node.addClass(class_node + " active");
-    console.log(class_node);
     return node;
   },
 
@@ -78,7 +106,14 @@ var Lascar = {
     $.ajax({
       url: Lascar.controller + "/" + action + "/" + element_id,
       type: "POST",
-      dataType: 'script'
+      dataType:'json',
+      success: function (data) {
+        Lascar.readResponse(data);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        console.log(xhr.status);
+        console.log(thrownError);
+      }
     });
   }
 }

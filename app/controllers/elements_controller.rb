@@ -13,10 +13,13 @@ class ElementsController < ApplicationController
     element_name = params[:controller].singularize
     element_model = element_name.camelize.constantize
     elements = element_model.select(fields)
+    controller = params[:controller]
+    action = params[:action]
     actions = ["show"]
-    locals = {fields: fields, fields_to_show: fields_to_show,
+    locals = {controller: controller, action: action,
+              fields: fields, fields_to_show: fields_to_show,
               elements: elements, actions: actions}
-    render "elements/list.js.erb", locals: locals
+    render :json => locals.to_json
   end
 
   def show
@@ -25,10 +28,13 @@ class ElementsController < ApplicationController
     element_name = params[:controller].singularize
     element_model = element_name.camelize.constantize
     element = element_model.select(fields).find(params[:id])
+    controller = params[:controller]
+    action = params[:action]
     actions = ["show"]
-    locals = {fields: fields, fields_to_show: fields_to_show,
+    locals = {controller: controller, action: action,
+              fields: fields, fields_to_show: fields_to_show,
               element: element, actions: actions}
-    render  "elements/show.js.erb", locals: locals
+    render :json => locals.to_json
   end
 
   private

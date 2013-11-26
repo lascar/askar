@@ -13,5 +13,12 @@
   $.ajax({
     url: "elements/list",
     type: "POST",
-    dataType:'script',
+    dataType:'json',
+    success: function (data) {
+      Lascar.readResponse(data);
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+      console.log(xhr.status);
+      console.log(thrownError);
+    }
   });
