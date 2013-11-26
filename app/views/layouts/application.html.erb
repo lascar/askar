@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Lascar </title>
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true  %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true  %>
+    <%= csrf_meta_tags  %>
+  </head>
+  <body>
+    <div data-child="tab" id="tabs"></div>
+    <div data-child="tab_content" id="tabs_contents"></div>
+  </body>
+</html>
+<script>
+  
+  $.ajax({ 
+    url: "elements/list", 
+    type: "POST", 
+    dataType:'json', 
+    success: function (data) { 
+      Lascar.readResponse(data); 
+    }, 
+    error: function (xhr, ajaxOptions, thrownError) { 
+      console.log(xhr.status); 
+      console.log(thrownError); 
+    } 
+  }); 
+
+
+</script>
