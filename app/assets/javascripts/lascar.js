@@ -14,24 +14,13 @@ var Lascar = {
   },
   executeResponse: function (action) {
     "use strict";
+    Lascar.displayTab();
     var actions = {
-      'list': function () {return Lascar.displayList(); },
-      'show': function () {return Lascar.displayShow(); }
+      'list': function () {return Lascar.displayTabContentList(); },
+      'show': function () {return Lascar.displayTabContentShow(); }
     };
     try {return actions[action](); }
     catch (err) {return false; }
-  },
-
-  displayList: function () {
-    'use strict';
-    Lascar.displayTab();
-    Lascar.displayTabContentList();
-  },
-
-  displayShow: function () {
-    'use strict';
-    Lascar.displayTab();
-    Lascar.displayTabContentShow();
   },
 
   displayTab: function () {
@@ -39,35 +28,80 @@ var Lascar = {
     var action = Lascar.action === "show" ? " " + Lascar.element.id : "",
       suffix = Lascar.action + action,
       tab = Lascar.createOrActiveNode("tab_", suffix, $("#tabs"));
+    tab.addClass("tab");
     tab.html(Lascar.controller + "<br>" + suffix);
   },
 
-  createOrActiveNode: function (id_pref, id_suf, parent_node) {
+  createDiv: function (id_name, parent_id, class_name, content) {
     'use strict';
-    var node, class_node = parent_node.data("child");
-    $("." + class_node).removeClass("active").addClass("inactive");
-    node = $("#" + id_pref + Lascar.controller + "_" + Lascar.action + id_suf);
-    if (node.length < 1) {
-      node = $("<div id='" + id_pref + Lascar.controller + "_" + Lascar.action + id_suf + "'></div>");
-      parent_node.append(node);
+    var new_div = document.createElement('div'), div_parent = document.getElementById(parent_id);
+    new_div.setAttribute('id', id_name);
+    if (class_name) {
+      new_div.setAttribute('class', class_name);
     }
-    node.addClass(class_node + " active");
-    return node;
+    if (parent_id && parent_id !== "" && div_parent) {
+      div_parent.appendChild(new_div);
+    }
+    console.log(content);
+    if (content && div_parent) {
+      new_div.innerHTML(content);
+    }
+    return new_div;
+  },
+
+  toogleClass: function (element, old_class, new_class) {
+    'use strict';
+    element.className = element.className.replace(old_class, new_class);
+  },
+
+  desactiveChildren: function (parent_id) {
+    'use strict';
+    var i, child_nodes = document.getElementById(parent_id).children;
+    if (child_nodes) {
+      for (i = 0; i < child_nodes.length; i += 1) {
+        if (!/inactive/.test(child_nodes[i].className)) {
+          Lascar.toogleClass(child_nodes[i], /active/, "inactive");
+        }
+      }
+    }
+  },
+
+  createOrActiveNode: function (prefix, suffix, parent_node) {
+    'use strict';
+    var node, id = prefix + Lascar.controller + "_" + Lascar.action + suffix,
+      parent_id = parent_node.attr('id');
+    Lascar.desactiveChildren(parent_id);
+    node = document.getElementById(id) || this.createDiv(id, parent_id);
+    node.setAttribute('class', "active");
+    return $(node);
   },
 
   displayTabContentShow: function () {
     'use strict';
-    var field_raw,
+    var label_field_raw_id, text_field_raw_id,
       tab_content =  Lascar.createOrActiveNode("", "", $("#tabs_contents"));
+    Lascar.desactiveChildren($("#tabs_contents").attr('id'));
+    console.log(Lascar.fields_to_show);
     $.each(Lascar.fields_to_show, function (index, field) {
-      field_raw = Lascar.buidFieldRaw(field);
-      tab_content.append(field_raw);
+      console.log(field);
+      var field_raw_id = Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field;
+      label_field_raw_id = Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "_label";
+      text_field_raw_id =  Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "_text";
+      var field_raw = Lascar.createDiv(field_raw_id, tab_content.attr('id'), "field_raw " + field);
+      console.log(label_field_raw_id);
+      console.log(field_raw_id);
+      console.log( "label " + field);
+      Lascar.createDiv(label_field_raw_id, field_raw_id, "label " + field, field);
+      Lascar.createDiv(text_field_raw_id, field_raw_id, "text " + field, Lascar.element[field]);
+      //field_raw = Lascar.buidFieldRaw(field);
+      //tab_content.append(field_raw);
     });
   },
 
   buidFieldRaw: function (field) {
     'use strict';
-    var label_field_raw = $("<div id='" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "_label'></div>"),
+    var field_raw_id = Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field,
+      label_field_raw = $("<div id='" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "_label'></div>"),
       text_field_raw = $("<div id='" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "_text'></div>"),
       field_raw = $("<div id='" + Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "'></div>");
     label_field_raw.addClass("label " + field);
