@@ -13,6 +13,8 @@
  */
 #tabs{
   clear:both;
+  display:table;
+  width: 100%;
   text-align: left;
   margin: 0;
   padding: 0;
@@ -25,11 +27,12 @@
 }
 .tab{
   position: relative;
+  float: left;
   margin: -1px 10px;
   padding: 0 15px;
   border: 1px solid #AAA;
   background: #ECECEC;
-  display: inline-block;
+  display: table;
   cursor: pointer;
 }
 #tabs_contents{
