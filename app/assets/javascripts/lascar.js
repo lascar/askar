@@ -123,10 +123,10 @@ var Lascar = {
     var div_action, link_action;
     div_action = Lascar.createDiv("div_link_" + Lascar.controller + "_" + action + "_" + element.id, parent_id, "div_link_" + action + " field");
     link_action = Lascar.createDiv("link_" + Lascar.controller + "_" + action + "_" + element.id, div_action.id, "link_" + action, action);
-    $(link_action).on('click', function () { Lascar.lauchAction(element.id, action); });
+    link_action.onclick = function () { Lascar.lauchAction(element.id, action); };
   },
 
-  lauchAction: function (element_id, action) {
+  lauchAction_org: function (element_id, action) {
     'use strict';
     $.ajax({
       url: Lascar.controller + "/" + action + "/" + element_id,
@@ -136,6 +136,41 @@ var Lascar = {
         Lascar.readResponse(data);
       }
     });
+  },
+
+  lauchAction: function (element_id, action) {
+    'use strict';
+    var jsonresp, xmlhttp = Lascar.ajaxRequest();
+    xmlhttp.open('POST', 'http://localhost:3000/' , Lascar.controller + '/' + action + '/' + element_id, true);
+    xml.setRequestHeader('Content-Type', 'application/x:
+    console.log(xmlhttp);
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        jsonresp = xmlhttp.responseText;
+        console.log(jsonreps);
+      }
+    }
+  },
+
+  //http://www.javascriptkit.com/dhtmltutors/ajaxgetpost4.shtml
+  ajaxRequest: function () {
+    'use strict';
+    var activexmodes=["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]
+    if (window.ActiveXObject){ 
+     for (var i=0; i<activexmodes.length; i++){
+      try{
+       return new ActiveXObject(activexmodes[i])
+      }
+      catch(e){
+      }
+     }
+    } else if (window.XMLHttpRequest) {
+     return new XMLHttpRequest();
+    } else {
+     return false
+   }
   }
 }
+
+
 
