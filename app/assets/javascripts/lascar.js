@@ -1,9 +1,7 @@
 /*jslint browser: true, nomen: true*/
-/*global $, jQuery*/
 var Lascar = {
   readResponse: function (data) {
     'use strict';
-    console.log(data);
     Lascar.controller = data.controller;
     Lascar.action = data.action;
     Lascar.elements = data.elements;
@@ -13,6 +11,7 @@ var Lascar = {
     Lascar.actions = data.actions;
     Lascar.executeResponse(Lascar.action);
   },
+
   executeResponse: function (action) {
     "use strict";
     Lascar.displayTab();
@@ -21,7 +20,7 @@ var Lascar = {
       'show': function () {return Lascar.displayTabContentShow(); }
     };
     try {return actions[action](); }
-    catch (err) {return false; }
+    catch (ignore) { }
   },
 
   displayTab: function () {
@@ -102,7 +101,7 @@ var Lascar = {
 
   displayTabContentList: function () {
     'use strict';
-    var i, j, element, field, action, element_raw, field_content_div, link_action,
+    var i, j, element, field, action, element_raw, field_content_div,
       tab_content = Lascar.createOrActiveNode("", "", "tabs_contents");
     tab_content.className += ' tab_content';
     for (i = 0; i < Lascar.elements.length; i += 1) {
@@ -129,7 +128,7 @@ var Lascar = {
 
   getCsrfToken: function () {
     'use strict';
-    var i, csrf_token, array_meta_tag = document.getElementsByTagName('meta');
+    var i, array_meta_tag = document.getElementsByTagName('meta');
     for (i = 0; i < array_meta_tag.length; i += 1) {
       if (array_meta_tag[i].getAttribute('name') === "csrf-token") {
         return array_meta_tag[i].getAttribute('content');
@@ -139,37 +138,35 @@ var Lascar = {
 
   lauchAction: function (element_id, action) {
     'use strict';
-    var jsonresp, csrf_token = Lascar.getCsrfToken(),
-      xmlhttp = Lascar.ajaxRequest();
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        jsonresp = xmlhttp.responseText;
-        Lascar.readResponse(JSON.parse(jsonresp));
-      }
-    }
+    var url, jsonresp, csrf_token = Lascar.getCsrfToken(), xmlhttp;
+    url = element_id === -1 ? Lascar.controller + '/' + action : Lascar.controller + '/' + action + '/' + element_id;
+    xmlhttp = Lascar.ajaxRequest();
     xmlhttp.open('POST', Lascar.controller + '/' + action + '/' + element_id, true);
     xmlhttp.setRequestHeader('X-CSRF-Token', csrf_token);
     xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+        jsonresp = xmlhttp.responseText;
+        Lascar.readResponse(JSON.parse(jsonresp));
+      }
+    };
   },
 
   ajaxRequest: function () {
     'use strict';
-    var activexmodes=["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]
-    if (window.ActiveXObject){ 
-     for (var i=0; i<activexmodes.length; i++){
-      try{
-       return new ActiveXObject(activexmodes[i])
+    var i, activexmodes = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"];
+    if (window.ActiveXObject) {
+      for (i = 0; i < activexmodes.length; i += 1) {
+        try {
+          return new ActiveXObject(activexmodes[i]);
+        }
+        catch (ignore) { }
       }
-      catch(e){
-      }
-     }
     } else if (window.XMLHttpRequest) {
-     return new XMLHttpRequest();
+      return new XMLHttpRequest();
     } else {
-     return false
-   }
+      return false;
+    }
   }
-}
-
-
+};
 

@@ -1,8 +1,8 @@
 <html>
   <head>
     <title>Lascar </title>
-    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true  %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true  %>
+    <%= stylesheet_link_tag    "application", media: "all" %>
+    <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags  %>
   </head>
   <body>
@@ -11,18 +11,7 @@
   </body>
 </html>
 <script>
-  
-  $.ajax({ 
-    url: "elements/list", 
-    type: "POST", 
-    dataType:'json', 
-    success: function (data) { 
-      Lascar.readResponse(data); 
-    }, 
-    error: function (xhr, ajaxOptions, thrownError) { 
-      alert(thrownError); 
-    } 
-  }); 
-
+  Lascar.controller = "<%= params[:controller] %>"; 
+  Lascar.lauchAction(-1, "list");
 
 </script>
