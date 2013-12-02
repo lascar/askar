@@ -3,6 +3,7 @@
 var Lascar = {
   readResponse: function (data) {
     'use strict';
+    console.log(data);
     Lascar.controller = data.controller;
     Lascar.action = data.action;
     Lascar.elements = data.elements;
@@ -126,33 +127,31 @@ var Lascar = {
     link_action.onclick = function () { Lascar.lauchAction(element.id, action); };
   },
 
-  lauchAction_org: function (element_id, action) {
+  getCsrfToken: function () {
     'use strict';
-    $.ajax({
-      url: Lascar.controller + "/" + action + "/" + element_id,
-      type: "POST",
-      dataType: 'json',
-      success: function (data) {
-        Lascar.readResponse(data);
-      }
-    });
-  },
-
-  lauchAction: function (element_id, action) {
-    'use strict';
-    var jsonresp, xmlhttp = Lascar.ajaxRequest();
-    xmlhttp.open('POST', 'http://localhost:3000/' , Lascar.controller + '/' + action + '/' + element_id, true);
-    xml.setRequestHeader('Content-Type', 'application/x:
-    console.log(xmlhttp);
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        jsonresp = xmlhttp.responseText;
-        console.log(jsonreps);
+    var i, csrf_token, array_meta_tag = document.getElementsByTagName('meta');
+    for (i = 0; i < array_meta_tag.length; i += 1) {
+      if (array_meta_tag[i].getAttribute('name') === "csrf-token") {
+        return array_meta_tag[i].getAttribute('content');
       }
     }
   },
 
-  //http://www.javascriptkit.com/dhtmltutors/ajaxgetpost4.shtml
+  lauchAction: function (element_id, action) {
+    'use strict';
+    var jsonresp, csrf_token = Lascar.getCsrfToken(),
+      xmlhttp = Lascar.ajaxRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        jsonresp = xmlhttp.responseText;
+        Lascar.readResponse(JSON.parse(jsonresp));
+      }
+    }
+    xmlhttp.open('POST', Lascar.controller + '/' + action + '/' + element_id, true);
+    xmlhttp.setRequestHeader('X-CSRF-Token', csrf_token);
+    xmlhttp.send();
+  },
+
   ajaxRequest: function () {
     'use strict';
     var activexmodes=["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"]
