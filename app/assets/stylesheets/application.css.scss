@@ -59,8 +59,15 @@
     .description{
       width:600px;
     }
-    .div_link_elements_show{
+    .link_show{
       width:40px;
+      cursor:pointer;
+      font-weight:600;
+      color:#707070;
+      &:hover{
+        color:#FFFFFF;
+        background-color:#000000;
+      }
     }
   }
   .field_raw{

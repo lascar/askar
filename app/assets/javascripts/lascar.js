@@ -29,8 +29,17 @@ var Lascar = {
       tab = Lascar.createOrActiveNode("tab_", suffix, "tabs");
     tab.setAttribute('class', 'tab active');
     tab_width = Lascar.controller.length > suffix.length ? Lascar.controller.length + 10 : suffix.length + 10;
+
     // set the width for ie78
+    tab.onclick = function () {
+      //Lascar.lauchAction(Lascar.element ? Lascar.element.id : -1, Lascar.action);
+      Lascar.switchOrCreateTab(tab);
+    };
     tab.innerHTML = Lascar.controller + "<br>" + Lascar.action + suffix;
+  },
+
+  switchOrCreateTab: function (tab) {
+    console.log(tab);
   },
 
   createDiv: function (id_name, parent_id, class_name, content) {
