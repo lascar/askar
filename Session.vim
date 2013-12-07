@@ -178,24 +178,24 @@ set wildmenu
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd ~/lascar
+cd ~/askar
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
 badd +1 app/controllers/elements_controller.rb
-badd +118 app/assets/javascripts/lascar.js
+badd +118 app/assets/javascripts/askar.js
 badd +23 app/views/layouts/application.html.erb
 badd +31 app/assets/stylesheets/application.css.scss
-args app/controllers/elements_controller.rb app/assets/javascripts/lascar.js
-edit app/assets/javascripts/lascar.js
+args app/controllers/elements_controller.rb app/assets/javascripts/askar.js
+edit app/assets/javascripts/askar.js
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
 argglobal
-edit app/assets/javascripts/lascar.js
+edit app/assets/javascripts/askar.js
 let s:cpo_save=&cpo
 set cpo&vim
 nmap <buffer> gf <Plug>RailsTabFind
@@ -270,7 +270,7 @@ setlocal nrformats=octal,hex
 setlocal nonumber
 setlocal numberwidth=4
 setlocal omnifunc=javascriptcomplete#CompleteJS
-setlocal path=.,lib,vendor,app/models/concerns,app/controllers/concerns,app/controllers,app/helpers,app/mailers,app/models,app/*,app/views,app/views/lascar,public,test,test/unit,test/functional,test/integration,test/controllers,test/helpers,test/mailers,test/models,vendor/plugins/*/lib,vendor/plugins/*/test,vendor/rails/*/lib,vendor/rails/*/test,~/lascar,/usr/include,
+setlocal path=.,lib,vendor,app/models/concerns,app/controllers/concerns,app/controllers,app/helpers,app/mailers,app/models,app/*,app/views,app/views/askar,public,test,test/unit,test/functional,test/integration,test/controllers,test/helpers,test/mailers,test/models,vendor/plugins/*/lib,vendor/plugins/*/test,vendor/rails/*/lib,vendor/rails/*/test,~/askar,/usr/include,
 setlocal nopreserveindent
 setlocal nopreviewwindow
 setlocal quoteescape=\\
@@ -295,7 +295,7 @@ if &syntax != 'javascript'
 setlocal syntax=javascript
 endif
 setlocal tabstop=2
-setlocal tags=~/lascar/tags,~/lascar/tmp/tags,~/lascar/.git/javascript.tags,~/lascar/.git/tags,./tags,./TAGS,tags,TAGS
+setlocal tags=~/askar/tags,~/askar/tmp/tags,~/askar/.git/javascript.tags,~/askar/.git/tags,./tags,./TAGS,tags,TAGS
 setlocal textwidth=0
 setlocal thesaurus=
 setlocal undofile
