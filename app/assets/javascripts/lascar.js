@@ -1,23 +1,23 @@
 /*jslint browser: true, nomen: true*/
-var Lascar = {
+var Askar = {
   readResponse: function (data) {
     'use strict';
-    Lascar.controller = data.controller;
-    Lascar.action = data.action;
-    Lascar.elements = data.elements;
-    Lascar.fields = data.fields;
-    Lascar.fields_to_show = data.fields_to_show;
-    Lascar.element = data.element;
-    Lascar.actions = data.actions;
-    Lascar.executeResponse(Lascar.action);
+    Askar.controller = data.controller;
+    Askar.action = data.action;
+    Askar.elements = data.elements;
+    Askar.fields = data.fields;
+    Askar.fields_to_show = data.fields_to_show;
+    Askar.element = data.element;
+    Askar.actions = data.actions;
+    Askar.executeResponse(Askar.action);
   },
 
   executeResponse: function (action) {
     "use strict";
-    Lascar.displayTab();
+    Askar.displayTab();
     var actions = {
-      'list': function () {return Lascar.displayTabContentList(); },
-      'show': function () {return Lascar.displayTabContentShow(); }
+      'list': function () {return Askar.displayTabContentList(); },
+      'show': function () {return Askar.displayTabContentShow(); }
     };
     try {return actions[action](); }
     catch (ignore) { }
@@ -25,17 +25,17 @@ var Lascar = {
 
   displayTab: function () {
     'use strict';
-    var tab_width, suffix = Lascar.action === "show" ? "_" + Lascar.element.id : "",
-      tab = Lascar.createOrActiveNode("tab_", suffix, "tabs");
+    var tab_width, suffix = Askar.action === "show" ? "_" + Askar.element.id : "",
+      tab = Askar.createOrActiveNode("tab_", suffix, "tabs");
     tab.setAttribute('class', 'tab active');
-    tab_width = Lascar.controller.length > suffix.length ? Lascar.controller.length + 10 : suffix.length + 10;
+    tab_width = Askar.controller.length > suffix.length ? Askar.controller.length + 10 : suffix.length + 10;
 
     // set the width for ie78
     tab.onclick = function () {
-      //Lascar.lauchAction(Lascar.element ? Lascar.element.id : -1, Lascar.action);
-      Lascar.switchOrCreateTab(tab);
+      //Askar.lauchAction(Askar.element ? Askar.element.id : -1, Askar.action);
+      Askar.switchOrCreateTab(tab);
     };
-    tab.innerHTML = Lascar.controller + "<br>" + Lascar.action + suffix;
+    tab.innerHTML = Askar.controller + "<br>" + Askar.action + suffix;
   },
 
   switchOrCreateTab: function (tab) {
@@ -70,7 +70,7 @@ var Lascar = {
     if (child_nodes) {
       for (i = 0; i < child_nodes.length; i += 1) {
         if (!/inactive/.test(child_nodes[i].className)) {
-          Lascar.toogleClass(child_nodes[i], /active/, "inactive");
+          Askar.toogleClass(child_nodes[i], /active/, "inactive");
         }
       }
     }
@@ -78,13 +78,13 @@ var Lascar = {
 
   createOrActiveNode: function (prefix, suffix, parent_id) {
     'use strict';
-    var node, class_names, id = prefix + Lascar.controller + "_" + Lascar.action + suffix;
-    Lascar.desactiveChildren(parent_id);
+    var node, class_names, id = prefix + Askar.controller + "_" + Askar.action + suffix;
+    Askar.desactiveChildren(parent_id);
     node = document.getElementById(id) || this.createDiv(id, parent_id);
     // for ie7-8
     class_names = node.className || "";
     if (/inactive/.test(class_names)) {
-      Lascar.toogleClass(node, "inactive", "active");
+      Askar.toogleClass(node, "inactive", "active");
     } else {
       node.className = class_names + " active";
     }
@@ -94,35 +94,35 @@ var Lascar = {
   displayTabContentShow: function () {
     'use strict';
     var tab_content, i, field, field_raw_id, field_raw, label_field_raw_id, text_field_raw_id;
-    Lascar.desactiveChildren("tabs_contents");
-    tab_content =  Lascar.createOrActiveNode("", "", "tabs_contents");
+    Askar.desactiveChildren("tabs_contents");
+    tab_content =  Askar.createOrActiveNode("", "", "tabs_contents");
     tab_content.className += ' tab_content';
-    for (i = 0; i < Lascar.fields_to_show.length; i += 1) {
-      field = Lascar.fields_to_show[i];
-      field_raw_id = Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field;
-      label_field_raw_id = Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "_label";
-      text_field_raw_id =  Lascar.controller + "_" + Lascar.action + "_" + Lascar.element.id + "_" + field + "_text";
-      field_raw = Lascar.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
-      Lascar.createDiv(label_field_raw_id, field_raw_id, "label " + field, field);
-      Lascar.createDiv(text_field_raw_id, field_raw_id, "text " + field, Lascar.element[field]);
+    for (i = 0; i < Askar.fields_to_show.length; i += 1) {
+      field = Askar.fields_to_show[i];
+      field_raw_id = Askar.controller + "_" + Askar.action + "_" + Askar.element.id + "_" + field;
+      label_field_raw_id = Askar.controller + "_" + Askar.action + "_" + Askar.element.id + "_" + field + "_label";
+      text_field_raw_id =  Askar.controller + "_" + Askar.action + "_" + Askar.element.id + "_" + field + "_text";
+      field_raw = Askar.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
+      Askar.createDiv(label_field_raw_id, field_raw_id, "label " + field, field);
+      Askar.createDiv(text_field_raw_id, field_raw_id, "text " + field, Askar.element[field]);
     }
   },
 
   displayTabContentList: function () {
     'use strict';
     var i, j, element, field, action, element_raw, field_content_div,
-      tab_content = Lascar.createOrActiveNode("", "", "tabs_contents");
+      tab_content = Askar.createOrActiveNode("", "", "tabs_contents");
     tab_content.className += ' tab_content';
-    for (i = 0; i < Lascar.elements.length; i += 1) {
-      element = Lascar.elements[i];
-      element_raw = Lascar.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
-      for (j = 0; j < Lascar.fields_to_show.length; j += 1) {
-        field = Lascar.fields_to_show[j];
-        field_content_div = Lascar.createDiv(Lascar.controller + "_" + Lascar.action + "_" + element.id, element_raw.id, "field " + field, element[field]);
+    for (i = 0; i < Askar.elements.length; i += 1) {
+      element = Askar.elements[i];
+      element_raw = Askar.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
+      for (j = 0; j < Askar.fields_to_show.length; j += 1) {
+        field = Askar.fields_to_show[j];
+        field_content_div = Askar.createDiv(Askar.controller + "_" + Askar.action + "_" + element.id, element_raw.id, "field " + field, element[field]);
       }
-      for (j = 0; j < Lascar.actions.length; j += 1) {
-        action = Lascar.actions[j];
-        Lascar.buildLinkAction(element, action, element_raw.id);
+      for (j = 0; j < Askar.actions.length; j += 1) {
+        action = Askar.actions[j];
+        Askar.buildLinkAction(element, action, element_raw.id);
       }
     }
   },
@@ -130,9 +130,9 @@ var Lascar = {
   buildLinkAction: function (element, action, parent_id) {
     'use strict';
     var div_action, link_action;
-    div_action = Lascar.createDiv("div_link_" + Lascar.controller + "_" + action + "_" + element.id, parent_id, "div_link_" + action + " field");
-    link_action = Lascar.createDiv("link_" + Lascar.controller + "_" + action + "_" + element.id, div_action.id, "link_" + action, action);
-    link_action.onclick = function () { Lascar.lauchAction(element.id, action); };
+    div_action = Askar.createDiv("div_link_" + Askar.controller + "_" + action + "_" + element.id, parent_id, "div_link_" + action + " field");
+    link_action = Askar.createDiv("link_" + Askar.controller + "_" + action + "_" + element.id, div_action.id, "link_" + action, action);
+    link_action.onclick = function () { Askar.lauchAction(element.id, action); };
   },
 
   getCsrfToken: function () {
@@ -147,16 +147,16 @@ var Lascar = {
 
   lauchAction: function (element_id, action) {
     'use strict';
-    var url, jsonresp, csrf_token = Lascar.getCsrfToken(), xmlhttp;
-    url = element_id === -1 ? Lascar.controller + '/' + action : Lascar.controller + '/' + action + '/' + element_id;
-    xmlhttp = Lascar.ajaxRequest();
-    xmlhttp.open('POST', Lascar.controller + '/' + action + '/' + element_id, true);
+    var url, jsonresp, csrf_token = Askar.getCsrfToken(), xmlhttp;
+    url = element_id === -1 ? Askar.controller + '/' + action : Askar.controller + '/' + action + '/' + element_id;
+    xmlhttp = Askar.ajaxRequest();
+    xmlhttp.open('POST', Askar.controller + '/' + action + '/' + element_id, true);
     xmlhttp.setRequestHeader('X-CSRF-Token', csrf_token);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
         jsonresp = xmlhttp.responseText;
-        Lascar.readResponse(JSON.parse(jsonresp));
+        Askar.readResponse(JSON.parse(jsonresp));
       }
     };
   },
