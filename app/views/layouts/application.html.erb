@@ -11,7 +11,9 @@
   </body>
 </html>
 <script>
+  var url;
   Askar.controller = "<%= params[:controller] %>"; 
-  Askar.lauchAction(-1, "list");
+  url = Askar.controller + "/list"; 
+  Askar.lauchAction(url);
 
 </script>

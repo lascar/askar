@@ -2,7 +2,7 @@
 var Askar = {
   tableIdToUrl: {
     aaaa: 'elements/list',
-    aaab: 'element/show'
+    aaab: 'elements/show'
   },
 
   tableUrlToId: {
@@ -12,8 +12,9 @@ var Askar = {
 
   idToUrl: function (id, element_id) {
     'use strict';
-    var url = tableIdToUrl[id] + (element_id ? '/' + element_id : '');
-    return ;
+    var suffix = element_id != -1 ? '/' + element_id : '';
+    var url = Askar.tableIdToUrl[id] + suffix;
+    return url;
   },
   
   urlToId: function (url) {
@@ -50,8 +51,8 @@ var Askar = {
     var tab_width, suffix = Askar.action === "show" ? "_" + Askar.element.id : "",
       tab = Askar.createOrActiveNode("tab_", suffix, "tabs");
     tab.setAttribute('class', 'tab active');
-    tab_width = Askar.controller.length > suffix.length ? Askar.controller.length + 10 : suffix.length + 10;
-
+    tab_width = Askar.controller.length > suffix.length ? (Askar.controller.length + 10) : (suffix.length + 10);
+    tab.style.width = tab_width + "px";
     // set the width for ie78
     tab.onclick = function () {
       Askar.switchOrCreateTab(tab);
@@ -153,10 +154,12 @@ var Askar = {
 
   buildLinkAction: function (element, action, parent_id) {
     'use strict';
-    var div_action, link_action;
-    div_action = Askar.createDiv("div_link_" + Askar.urlToId() + "_" + element.id, parent_id, "div_link_" + action + " field");
-    link_action = Askar.createDiv("link_" + Askar.urlToId(Askar.controller + "_" + action) + "_" + element.id, div_action.id, "link_" + action, action);
-    link_action.onclick = function () { Askar.lauchAction(element.id, action); };
+    var div_action, link_action, id, url, action_name = action.replace(/[a-z_]*_([a-z]*)/, "$1");
+    id = Askar.urlToId(action);
+    div_action = Askar.createDiv("div_link_" + Askar.urlToId(action) + "_" + element.id, parent_id, "div_link_" + action_name + " field");
+    link_action = Askar.createDiv("link_" + Askar.urlToId(action) + "_" + element.id, div_action.id, "link_" + action_name, action_name);
+    url = Askar.idToUrl(id, element.id);
+    link_action.onclick = function () { Askar.lauchAction(url); };
   },
 
   getCsrfToken: function () {
@@ -169,18 +172,18 @@ var Askar = {
     }
   },
 
-  lauchAction: function (element_id, action) {
+  lauchAction: function (url) {
     'use strict';
-    var url, jsonresp, csrf_token = Askar.getCsrfToken(), xmlhttp;
-    url = element_id === -1 ? Askar.controller + '/' + action : Askar.controller + '/' + action + '/' + element_id;
+    var jsonresp, csrf_token = Askar.getCsrfToken(), xmlhttp;
+    //url = element_id === -1 ? Askar.controller + '/' + action : Askar.controller + '/' + action + '/' + element_id;
     xmlhttp = Askar.ajaxRequest();
-    xmlhttp.open('POST', Askar.controller + '/' + action + '/' + element_id, true);
+    xmlhttp.open('POST', url, true);
     xmlhttp.setRequestHeader('X-CSRF-Token', csrf_token);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
         jsonresp = xmlhttp.responseText;
-        Askar.readResponse(JSON.parse(jsonresp));
+        Askar.readResponse(Askar.parseJson(jsonresp));
       }
     };
   },
@@ -200,6 +203,25 @@ var Askar = {
     } else {
       return false;
     }
+  },
+
+  parseJson: function (jsonString) {
+      if (Askar.detectBrowser()) {
+          return eval('(' + jsonString + ')');
+      }
+      else {
+          return JSON.parse(jsonString);
+      }
+  },
+
+  detectBrowser: function () {
+    var ua =navigator.userAgent, re = /MSIE ([\d])/, match = ua.match(re);
+    if (match && match[1] <= 8) {
+      return true;
+    } else {
+      return false;
+    }
   }
+
 };
 
