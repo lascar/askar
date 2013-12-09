@@ -127,7 +127,7 @@ var Askar = {
       text_field_raw_id =  Askar.urlToId() + suffix + "_" + field + "_text";
       field_raw = Askar.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
       Askar.createDiv(label_field_raw_id, field_raw_id, "label " + field, field);
-      content = element ? Askar.element[field] : '';
+      content = Askar.element ? Askar.element[field] : '';
       Askar.createDiv(text_field_raw_id, field_raw_id, "text " + field, content);
     }
   },
