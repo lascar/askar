@@ -32,6 +32,7 @@ var Askar = {
     Askar.fields_to_show = data.fields_to_show;
     Askar.element = data.element;
     Askar.actions = data.actions;
+    Askar.id = Askar.urlToId(Askar.controller + "_" + Askar.action);
     Askar.executeResponse(Askar.action);
   },
 
@@ -48,20 +49,26 @@ var Askar = {
 
   displayTab: function () {
     'use strict';
-    var tab_width, suffix = Askar.action === "show" ? "_" + Askar.element.id : "",
-      tab = Askar.createOrActiveNode("tab_", suffix, "tabs");
+    var tab_width, suffix, tab;
+    suffix = Askar.element ? "_" + Askar.element.id : "";
+    tab = Askar.createOrActiveNode("tab_", suffix, "tabs");
     tab.setAttribute('class', 'tab active');
     tab_width = Askar.controller.length > suffix.length ? (Askar.controller.length + 10) : (suffix.length + 10);
     tab.style.width = tab_width + "px";
     // set the width for ie78
     tab.onclick = function () {
-      Askar.switchOrCreateTab(tab);
+      Askar.switchOrCreateTab(tab.id);
     };
     tab.innerHTML = Askar.controller + "<br>" + Askar.action + suffix;
   },
 
-  switchOrCreateTab: function (tab) {
-    console.log(tab);
+  switchOrCreateTab: function (id, element_id) {
+    var suffix, suffix_id, tab_id, tab;
+    suffix = element_id ? "/" + element_id : "",
+    suffix_id = element_id ? "_" + element_id : "";
+    tab_id = id + suffix_id;
+    console.log(tab_id);
+    //tab = Askar.createOrActiveNode(tab_id, suffix, "tabs");
     //Askar.lauchAction(Askar.element ? Askar.element.id : -1, Askar.action);
   },
 
