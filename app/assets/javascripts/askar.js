@@ -33,45 +33,48 @@ var Askar = {
     Askar.element = data.element;
     Askar.actions = data.actions;
     Askar.id = Askar.urlToId(Askar.controller + "_" + Askar.action);
-    Askar.executeResponse(Askar.action);
+    Askar.element_id = Askar.element ? "_" + Askar.element.id : "";
+    Askar.executeResponse(Askar.id, Askar.element_id);
   },
 
-  executeResponse: function (action) {
+  executeResponse: function (id, element_id) {
     "use strict";
-    Askar.displayTab();
+    var action = Askar.idToUrl(this.id.replace(/^tab_([a-z]{4}).*/, "$1")).replace(/\w*\/(\w*)/, "$1");
+    console.log(Askar.idToUrl(this.id.replace(/^tab_([a-z]{4}).*/, "$1")));
+    Askar.displayTab(id, element_id);
     var actions = {
-      'list': function () {return Askar.displayTabContentList(); },
-      'show': function () {return Askar.displayTabContentShow(); }
+      'list': function () {return Askar.displayTabContentList(id); },
+      'show': function () {return Askar.displayTabContentShow(id, element_id); }
     };
     try {return actions[action](); }
     catch (ignore) { }
   },
 
-  displayTab: function () {
+  displayTab: function (id, element_id, content) {
     'use strict';
-    var tab_width, suffix, tab;
-    suffix = Askar.element ? "_" + Askar.element.id : "";
-    tab = Askar.createOrActiveNode("tab_", suffix, "tabs");
-    tab.setAttribute('class', 'tab active');
-    tab_width = Askar.controller.length > suffix.length ? (Askar.controller.length + 10) : (suffix.length + 10);
-    tab.style.width = tab_width + "px";
-    // set the width for ie78
-    tab.onclick = function () {
-      Askar.switchOrCreateTab(tab.id);
-    };
-    tab.innerHTML = Askar.controller + "<br>" + Askar.action + suffix;
+    var tab, tab_width, suffix, class_names, match, action;
+    id = id || Askar.urlToId();
+    element_id = element_id || "";
+    suffix =  Askar.action + (element_id ? "_" + Askar.element.id : "");
+    content = content || Askar.controller + "<BR>" + suffix;
+    tab =  Askar.createOrActiveNode("tab_", id, "tabs", element_id);
+    if (tab !== -1) {
+      class_names = tab.className || "";
+      tab.className = class_names + " tab";
+      tab_width = Askar.controller.length > suffix.length ? (Askar.controller.length + 10) : (suffix.length + 10);
+      tab.style.width = tab_width + "px";
+      // set the width for ie78
+      tab.onclick = function () {
+        id = this.id.replace(/^tab_([a-z]{4}).*/, "$1");
+        match = this.id.match(/(^tab_[a-z]{4})(_\d*)/);
+        element_id = match ? match[2] : "";
+        console.log(Askar.action);
+        Askar.executeResponse(Askar.action, id, element_id);
+      };
+      tab.innerHTML = content;
+    }
   },
-
-  switchOrCreateTab: function (id, element_id) {
-    var suffix, suffix_id, tab_id, tab;
-    suffix = element_id ? "/" + element_id : "",
-    suffix_id = element_id ? "_" + element_id : "";
-    tab_id = id + suffix_id;
-    console.log(tab_id);
-    //tab = Askar.createOrActiveNode(tab_id, suffix, "tabs");
-    //Askar.lauchAction(Askar.element ? Askar.element.id : -1, Askar.action);
-  },
-
+ 
   createDiv: function (id_name, parent_id, class_name, content) {
     'use strict';
     var text_node, new_div = document.createElement('div'), div_parent = document.getElementById(parent_id);
@@ -106,55 +109,67 @@ var Askar = {
     }
   },
 
-  createOrActiveNode: function (prefix, suffix, parent_id) {
+  createOrActiveNode: function (prefix, id, parent_id, element_id){
     'use strict';
-    var node, class_names, id = prefix + Askar.urlToId() + suffix;
+    var node, class_names;
     Askar.desactiveChildren(parent_id);
-    node = document.getElementById(id) || this.createDiv(id, parent_id);
-    // for ie7-8
-    class_names = node.className || "";
-    if (/inactive/.test(class_names)) {
-      Askar.toogleClass(node, "inactive", "active");
+    node = document.getElementById(prefix + id + element_id);
+    if (!node) {
+       node = this.createDiv(prefix + id + element_id, parent_id);
+      class_names = node.className || "";
+      if (/inactive/.test(class_names)) {
+        Askar.toogleClass(node, "inactive", "active");
+      } else {
+        node.className = class_names + " active";
+      }
+      return node;
     } else {
-      node.className = class_names + " active";
+      Askar.toogleClass(node, "inactive", "active");
+      return -1;
     }
-    return node;
   },
 
-  displayTabContentShow: function () {
+  displayTabContentShow: function (id, element_id) {
     'use strict';
     var tab_content, i, field, suffix, content, field_raw_id, field_raw, label_field_raw_id, text_field_raw_id;
+    id = id || Askar.urlToId();
+    element_id = element_id || "_" + Askar.element.id;
     Askar.desactiveChildren("tabs_contents");
-    tab_content =  Askar.createOrActiveNode("", "", "tabs_contents");
-    tab_content.className += ' tab_content';
-    for (i = 0; i < Askar.fields_to_show.length; i += 1) {
-      field = Askar.fields_to_show[i];
-      suffix = Askar.element ? "_" + Askar.element.id + "_" + field : "_" + field;
-      field_raw_id = Askar.urlToId() + suffix;
-      label_field_raw_id = Askar.urlToId() + suffix + "_label";
-      text_field_raw_id =  Askar.urlToId() + suffix + "_" + field + "_text";
-      field_raw = Askar.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
-      Askar.createDiv(label_field_raw_id, field_raw_id, "label " + field, field);
-      content = Askar.element ? Askar.element[field] : '';
-      Askar.createDiv(text_field_raw_id, field_raw_id, "text " + field, content);
+    tab_content =  Askar.createOrActiveNode("", id, "tabs_contents", element_id);
+    if (tab_content !== -1) {
+      tab_content.className += ' tab_content';
+      for (i = 0; i < Askar.fields_to_show.length; i += 1) {
+        field = Askar.fields_to_show[i];
+        suffix = Askar.element ? "_" + Askar.element.id + "_" + field : "_" + field;
+        field_raw_id = Askar.urlToId() + suffix;
+        label_field_raw_id = Askar.urlToId() + suffix + "_label";
+        text_field_raw_id =  Askar.urlToId() + suffix + "_" + field + "_text";
+        field_raw = Askar.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
+        Askar.createDiv(label_field_raw_id, field_raw_id, "label " + field, field);
+        content = Askar.element ? Askar.element[field] : '';
+        Askar.createDiv(text_field_raw_id, field_raw_id, "text " + field, content);
+      }
     }
   },
 
-  displayTabContentList: function () {
+  displayTabContentList: function (id) {
     'use strict';
-    var i, j, element, field, action, element_raw, field_content_div,
-      tab_content = Askar.createOrActiveNode("", "", "tabs_contents");
-    tab_content.className += ' tab_content';
-    for (i = 0; i < Askar.elements.length; i += 1) {
-      element = Askar.elements[i];
-      element_raw = Askar.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
-      for (j = 0; j < Askar.fields_to_show.length; j += 1) {
-        field = Askar.fields_to_show[j];
-        field_content_div = Askar.createDiv(Askar.urlToId() + "_" + element.id, element_raw.id, "field " + field, element[field]);
-      }
-      for (j = 0; j < Askar.actions.length; j += 1) {
-        action = Askar.actions[j];
-        Askar.buildLinkAction(element, action, element_raw.id);
+    var i, j, element, field, action, element_raw, field_content_div, tab_content;
+    id = id || Askar.urlToId();
+    tab_content = Askar.createOrActiveNode("", id, "tabs_contents", "");
+    if (tab_content !== -1) {
+      tab_content.className += ' tab_content';
+      for (i = 0; i < Askar.elements.length; i += 1) {
+        element = Askar.elements[i];
+        element_raw = Askar.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
+        for (j = 0; j < Askar.fields_to_show.length; j += 1) {
+          field = Askar.fields_to_show[j];
+          field_content_div = Askar.createDiv(Askar.urlToId() + "_" + element.id, element_raw.id, "field " + field, element[field]);
+        }
+        for (j = 0; j < Askar.actions.length; j += 1) {
+          action = Askar.actions[j];
+          Askar.buildLinkAction(element, action, element_raw.id);
+        }
       }
     }
   },
