@@ -12,7 +12,7 @@ var Askar = {
 
   idToUrl: function (id, element_id) {
     'use strict';
-    var suffix = element_id != -1 ? '/' + element_id : '';
+    var suffix = element_id ? '/' + element_id : '';
     var url = Askar.tableIdToUrl[id] + suffix;
     return url;
   },
@@ -33,14 +33,18 @@ var Askar = {
     Askar.element = data.element;
     Askar.actions = data.actions;
     Askar.id = Askar.urlToId(Askar.controller + "_" + Askar.action);
-    Askar.element_id = Askar.element ? "_" + Askar.element.id : "";
+    Askar.element_id = Askar.element ? Askar.element.id : "";
     Askar.executeResponse(Askar.id, Askar.element_id);
   },
 
+  extractActionFromId: function (id) {
+    var url = Askar.idToUrl(id.replace(/(?:^tab_)?([a-z]{4})(:?_\d*)?/, "$1"));
+    return url ? url.replace(/^\w*\/(w*)/, "$1") : "";
+  },
+ 
   executeResponse: function (id, element_id) {
     "use strict";
-    var action = Askar.idToUrl(this.id.replace(/^tab_([a-z]{4}).*/, "$1")).replace(/\w*\/(\w*)/, "$1");
-    console.log(Askar.idToUrl(this.id.replace(/^tab_([a-z]{4}).*/, "$1")));
+    var action = Askar.extractActionFromId(id);
     Askar.displayTab(id, element_id);
     var actions = {
       'list': function () {return Askar.displayTabContentList(id); },
@@ -65,11 +69,11 @@ var Askar = {
       tab.style.width = tab_width + "px";
       // set the width for ie78
       tab.onclick = function () {
-        id = this.id.replace(/^tab_([a-z]{4}).*/, "$1");
-        match = this.id.match(/(^tab_[a-z]{4})(_\d*)/);
+        match = this.id.match(/^tab_([a-z]*)(?:_(\d*))?/);
+        id = match ? match[1] : "";
         element_id = match ? match[2] : "";
-        console.log(Askar.action);
-        Askar.executeResponse(Askar.action, id, element_id);
+        action = Askar.extractActionFromId(this.id);
+        Askar.executeResponse(id, element_id);
       };
       tab.innerHTML = content;
     }
@@ -112,6 +116,7 @@ var Askar = {
   createOrActiveNode: function (prefix, id, parent_id, element_id){
     'use strict';
     var node, class_names;
+    element_id = element_id ? "_" + element_id : "";
     Askar.desactiveChildren(parent_id);
     node = document.getElementById(prefix + id + element_id);
     if (!node) {
