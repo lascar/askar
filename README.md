@@ -1,7 +1,7 @@
 askar
 =========
 
-where javascript is in charge of the showbizz (most important things are in askar.js
+where javascript is in charge of the showbizz (most important things are in askar.js)
 
 no jquery to keep framework independant (and for learning purpose)
 
