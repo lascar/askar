@@ -3,7 +3,7 @@ askar
 
 where javascript is in charge of the showbizz (most important things are in askar.js
 
-no jquery to keep framework indepedant (and for learning purpose)
+no jquery to keep framework independant (and for learning purpose)
 
 comunication between server and client mostly through ajax and json
 
