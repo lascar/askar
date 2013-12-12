@@ -9,5 +9,23 @@
     <%= label_tag :password %><br />
     <%= password_field_tag :password %>
   </p>
+  <%= form_tag('#', multipart: true) do %>
+    <%= label_tag "public key" %>
+    <%= file_field_tag 'pub_key' %>
+  <% end %>
   <p class="button"><%= submit_tag %></p>
 <% end %>
+
+<script>
+  document.getElementById('pub_key').addEventListener('change', readPubKey, false);
+
+  // put in a worker
+  function readPubKey () {
+    var pub_key, read = new FileReaderSync();
+    read.readAsText(this.files[0]);
+    read.onloadend=function(){
+      pub_key = read.result;
+    }
+    console.log(pub_key);
+  }
+</script>
