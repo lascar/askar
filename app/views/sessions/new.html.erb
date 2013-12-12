@@ -12,20 +12,33 @@
   <%= form_tag('#', multipart: true) do %>
     <%= label_tag "public key" %>
     <%= file_field_tag 'pub_key' %>
+    <%= hidden_field_tag 'key' %>
   <% end %>
   <p class="button"><%= submit_tag %></p>
 <% end %>
 
 <script>
   document.getElementById('pub_key').addEventListener('change', readPubKey, false);
+  var file, pub_key, reader, worker = new Worker("readPubKey.js");
 
-  // put in a worker
   function readPubKey () {
-    var pub_key, read = new FileReaderSync();
-    read.readAsText(this.files[0]);
-    read.onloadend=function(){
-      pub_key = read.result;
+    file = this.files[0];
+    reader = new FileReader();
+    reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) {
+      document.getElementById('key').setAttribute('data', evt.target.result);
+    }
+    reader.onerror = function (evt) {
+      pub_key = "error";
     }
     console.log(pub_key);
+  }
+
+  function readPubKey1 () {
+    file = this.files[0];
+    worker.onmessage = function (e, pub_key) {
+      console.log(e.data.result);
+    }
+    worker.postMessage(file);
   }
 </script>
