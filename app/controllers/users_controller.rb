@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_before_filter :logged_in?, :only => [:new, :create]
   def index
   end
 
@@ -9,7 +10,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to elements_list_path, :notice => "Signed up!"
+      redirect_to :action => :index, :notice => "Signed up!"
     else
       render "new"
     end
