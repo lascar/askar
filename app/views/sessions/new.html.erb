@@ -9,12 +9,12 @@
     <%= label_tag :password %><br />
     <%= password_field_tag :password %>
   </p>
-  <%= form_tag('#', multipart: true) do %>
-    <%= label_tag "public key" %>
-    <%= file_field_tag 'pub_key' %>
-    <%= hidden_field_tag 'key' %>
-  <% end %>
-  <p class="button"><%= submit_tag %></p>
+  <p class="button"><%= submit_tag 'login' %></p>
+<% end %>
+<%= form_tag('#', multipart: true) do %>
+  <%= label_tag "public key" %>
+  <%= file_field_tag 'pub_key' %>
+  <%= hidden_field_tag 'key' %>
 <% end %>
 
 <script>
