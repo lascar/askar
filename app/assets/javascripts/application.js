@@ -10,4 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require askar
+//= require jquery-1.10.2
+//= require underscore
+//= require backbone
+//= require bootstrap
