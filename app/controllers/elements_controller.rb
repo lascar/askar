@@ -1,18 +1,15 @@
 class ElementsController < ApplicationController
+  respond_to :json
   PERMITED_FIELDS = ["id", "name", "description"]
   DEFAULT_FIELDS = ["id", "name", "description"]
   before_action :field_names_can_be
 
   def index
-    render :file => "layouts/application.html.erb", :layout => false
-  end
-
-  def list
-    execute
+    respond_with(@elements = Element.all)
   end
 
   def show
-    execute
+    respond_with(@element = Element.find(params[:id]))
   end
 
   private
