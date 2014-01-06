@@ -1,0 +1,1 @@
+var elementTemplate = "<div class='fichaElement'><div class='field'><div class='namefield'>Name:</div><%=name%></div><div class='field'><div class='descriptionfield'>Description:</div><%=description%></div></div>";
