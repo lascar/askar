@@ -26,12 +26,14 @@
     reader = new FileReader();
     reader.readAsText(file, "UTF-8");
     reader.onload = function (evt) {
+      pub_key = evt.target.result;
+      // use here to encrypt if it is the private key
+      // if it is the pub send it with the form
       document.getElementById('key').setAttribute('data', evt.target.result);
     }
     reader.onerror = function (evt) {
       pub_key = "error";
     }
-    console.log(pub_key);
   }
 
   function readPubKey1 () {
