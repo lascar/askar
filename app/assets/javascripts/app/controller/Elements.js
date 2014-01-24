@@ -39,5 +39,6 @@ Ext.define('AM.controller.Elements', {
 
     record.set(values);
     win.close();
+    this.getElementsStore().sync();
     }
 });
