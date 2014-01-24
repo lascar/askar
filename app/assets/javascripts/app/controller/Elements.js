@@ -32,13 +32,23 @@ Ext.define('AM.controller.Elements', {
     },
 
     updateElement: function(button) {
-    var win    = button.up('window'),
-        form   = win.down('form'),
-        record = form.getRecord(),
-        values = form.getValues();
+        var win    = button.up('window'),
+            form   = win.down('form'),
+            record = form.getRecord(),
+            values = form.getValues(),
+            metas, meta, hidden;
 
-    record.set(values);
-    win.close();
-    this.getElementsStore().sync();
+        metas = document.getElementsByTagName('meta');
+        for (var x=0,y=metas.length; x<y; x++) {
+            if (metas[x].name.toLowerCase() == "csrf-token") {
+                meta = metas[x].content;
+                break;
+            }
+        }
+        hidden = new Ext.form.TextField({xtype: 'hidden', name: 'csrf-token', value: meta});
+        form.add(hidden);
+        record.set(values);
+        win.close();
+        this.getElementsStore().sync();
     }
 });
