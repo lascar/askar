@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Askar </title>
+    <%= stylesheet_link_tag    "application_before_login", media: "all" %>
+    <%= javascript_include_tag "application_before_login" %>
+    <%= csrf_meta_tags  %>
+  </head>
+    <body>
+      <div id="user_nav">
+        <%= link_to "Sign up", sign_up_path %> or 
+        <%= link_to "Log in", log_in_path %>
+      </div>
+      <% flash.each do |name, msg| %>
+        <%= content_tag :div, msg, :id => "flash#{name}" %>
+      <% end %>
+      <%= yield %>
+  </body>
+</html>

@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
+  layout "application_before_login"
   skip_before_filter :logged_in?, :only => [:new, :create]
   def index
+    redirect_to elements_path
   end
 
   def new

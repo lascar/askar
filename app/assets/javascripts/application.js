@@ -10,4 +10,9 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require askar
+//= require ext-4.2/ext-debug.js
+//= require_tree ./app/model
+//= require_tree ./app/store
+//= require_tree ./app/view
+//= require_tree ./app/controller
+//= require app
