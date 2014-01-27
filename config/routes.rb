@@ -4,7 +4,7 @@ Askar::Application.routes.draw do
   get "sign_up" => 'users#new', :as => 'sign_up'
   get "elements" => "elements#index", :as => 'elements'
   get "elements/list" => "elements#list"
-  post "elements/update" => "elements#update"
+  put "elements/update/:id" => "elements#update"
   resources :users
   resources :sessions
   # The priority is based upon order of creation: first created -> highest priority.

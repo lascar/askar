@@ -8,6 +8,13 @@ class ElementsController < ApplicationController
   end
   
   def update
-    console.log(params)
+    element = Element.find(params[:id])
+    element.update!(element_params)
+    render :nothing => true
   end
+  
+  private
+    def element_params
+      params.require(:element).permit(:name, :description)
+    end
 end

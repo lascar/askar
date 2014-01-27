@@ -5,7 +5,7 @@ Ext.define('AM.store.Elements', {
     autoLoad: true,
 
     proxy: {
-        type: 'ajax',
+        type: 'rest',
         api: {
             read: 'elements/list',
             update: 'elements/update'
