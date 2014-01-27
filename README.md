@@ -5,6 +5,8 @@ where javascript is in charge of the showbizz (most important things are in aska
 
 no jquery to keep framework independant (and for learning purpose)
 
+frameworks are intented in branch (backbone, extjs...)
+
 comunication between server and client mostly through ajax and json
 
 Instalation
