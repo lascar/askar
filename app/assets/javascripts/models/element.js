@@ -1,2 +1,2 @@
 /*jslint browser: true, nomen: true*/
-var Element =  Backbone.Model.extend({});
+app.Element =  Backbone.Model.extend({});

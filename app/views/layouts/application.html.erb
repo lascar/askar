@@ -18,10 +18,10 @@
       <% flash.each do |name, msg| %>
         <%= content_tag :div, msg, :id => "flash#{name}" %>
       <% end %>
-      <div data-child="tab" id="tabs"></div>
-      <div data-child="tab_content" id="tabs_contents"></div>
       <% if params[:controller] == "sessions" or params[:controller] == "users" %>
         <%= yield %>
       <% end %>
+      <div id="tabs"></div>
+      <div id="tabs_contents"></div>
   </body>
 </html>

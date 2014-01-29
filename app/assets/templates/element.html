@@ -1,0 +1,13 @@
+<script type="text/template" id="element-list-template">
+<div id="list_elements">
+  <% _.each(elements, function (element) { %>
+    <div id=element_<%= element.get('id') %> >
+      <div class="element_name">
+        <%= element.get('name') %>
+      </div>
+      <div class="element_description">
+        <%= element.get('description') %>
+      </div>
+    </div>
+  <% }); %>
+</div>

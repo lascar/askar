@@ -1,17 +1,12 @@
-FichaElement = Backbone.View.extend({
-  template: _.template(elementTemplate),
+app.FichaElements = Backbone.View.extend({
+  el: '#tabs_contents',
+  template: _.template('#element-list-template'),
   initialize: function () {
-    this.model.bind('change', this.render, this);
-    this.model.bind('destroy', this.remove, this);
+    this.render();
   },
-  render: function () {
-    console.log(this.model);
-    $(this.el).html(this.template(this.model.toJSON()));
+  render: function (elements) {
+    console.log("render : " +  app.elements);
+    $(this.el).html(this.template(app.elements.toJSON()));
     return this;
-  },
-  remove: function () { /* ... */}
+  }
 });
-var elements = new Elements;
-var element = elements.first;
-var ficha = new FichaElement({el:$('body'), model: element});
-ficha.render();
