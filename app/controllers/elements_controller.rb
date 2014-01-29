@@ -33,11 +33,11 @@ class ElementsController < ApplicationController
       when "list"
         element = nil
         elements = element_model.select(fields)
-        actions = ["elements_show"]
+        actions = ["elements/show"]
       when "show"
         element = element_model.find(params[:id])
         elements = nil
-        actions = ["elements_show"]
+        actions = ["elements/show"]
       end
       locals = {controller: controller, action: action,
                 fields: fields, fields_to_show: fields_to_show,

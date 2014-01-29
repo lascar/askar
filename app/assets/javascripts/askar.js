@@ -1,26 +1,47 @@
 /*jslint browser: true, nomen: true*/
 var Askar = {
-  tableIdToUrl: {
-    aaaa: 'elements/list',
-    aaab: 'elements/show'
-  },
-
-  tableUrlToId: {
-    elements_list: 'aaaa',
-    elements_show: 'aaab'
+  idUrlAction: function (orden, valor) {
+    var idUrl = {
+      aaaa: 'elements/list',
+      aaab: 'elements/show'
+    };
+    var idAction = {
+      aaaa: 'list',
+      aaab: 'show'
+    };
+    var idToUrl = function (valor) {
+      return idUrl[valor];
+    };
+    var idToAction = function (valor) {
+      return idAction[valor];
+    };
+    var urlToId = function (valor) {
+      for (var key in idUrl) {
+        if (idUrl[key] === valor) {
+          return key;
+        }
+      };
+    };
+    var translate = {
+      'idToUrl' : function () { return idToUrl(valor) },
+      'idToAction' : function () { return idToAction(valor) },
+      'urlToId' : function () { return urlToId(valor) }
+    }  
+    try { return translate[orden](); }
+    catch(err) {return false; }
   },
 
   idToUrl: function (id, element_id) {
     'use strict';
     var suffix = element_id ? '/' + element_id : '';
-    var url = Askar.tableIdToUrl[id] + suffix;
-    return url;
+    var url = Askar.idUrlAction("idToUrl", id);
+    return url + suffix;
   },
   
   urlToId: function (url) {
     'use strict';
-    var url_intern = url ? url : Askar.controller + '_' + Askar.action;
-    return Askar.tableUrlToId[url_intern];
+    var url_intern = url ? url : Askar.controller + '/' + Askar.action;
+    return Askar.idUrlAction("urlToId", url_intern);
   },
 
   readResponse: function (data) {
@@ -32,7 +53,7 @@ var Askar = {
     Askar.fields_to_show = data.fields_to_show;
     Askar.element = data.element;
     Askar.actions = data.actions;
-    Askar.id = Askar.urlToId(Askar.controller + "_" + Askar.action);
+    Askar.id = Askar.urlToId(Askar.controller + "/" + Askar.action);
     Askar.element_id = Askar.element ? Askar.element.id : "";
     Askar.executeResponse(Askar.id, Askar.element_id);
   },
@@ -181,7 +202,7 @@ var Askar = {
 
   buildLinkAction: function (element, action, parent_id) {
     'use strict';
-    var div_action, link_action, id, url, action_name = action.replace(/[a-z_]*_([a-z]*)/, "$1");
+    var div_action, link_action, id, url, action_name = action.replace(/[a-z_]*\/([a-z]*)/, "$1");
     id = Askar.urlToId(action);
     div_action = Askar.createDiv("div_link_" + Askar.urlToId(action) + "_" + element.id, parent_id, "div_link_" + action_name + " field");
     link_action = Askar.createDiv("link_" + Askar.urlToId(action) + "_" + element.id, div_action.id, "link_" + action_name, action_name);
