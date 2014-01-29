@@ -11,6 +11,16 @@
  *= require_self
  *= require_tree .
  */
+body{
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+#user_nav{
+  background-color: silver;
+  padding: 1em;
+  margin-bottom: 1em; 
+}
 #tabs{
   clear:both;
   display:table;
@@ -28,7 +38,7 @@
 .tab{
   position: relative;
   float: left;
-  margin: -1px 10px;
+  margin: -1px 1px;
   padding: 0 15px;
   border: 1px solid #AAA;
   background: #ECECEC;
