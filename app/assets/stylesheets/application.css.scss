@@ -51,22 +51,27 @@ body{
     display:table;
     width: 100%;
     text-align: left;
-    .active{
+    .tab.active{
       background: #FFF;
-      border-bottom-color: #FFF;
+      border-bottom: 0.1em solid #FFFFFF !important;;
       color: #000;
     }
-  }
-  .tab{
-    position: relative;
-    float: left;
-    margin: -.1em .1em;
-    padding: .3em 1em;
-    border: .1em solid #AAA;
-    background: #ECECEC;
-    display: table;
-    cursor: pointer;
-    font-size: .8em;
+    .tab.inactive{
+      border-bottom: 0.1em solid #000000 !important;
+    }
+    .tab{
+      border-top: 0.1em solid #000000 !important;
+      border-left: 0.1em solid #000000 !important;
+      border-right: 0.1em solid #000000 !important;
+      position: relative;
+      float: left;
+      margin: -.1em .1em;
+      padding: .3em 1em;
+      background: #ECECEC;
+      display: table;
+      cursor: pointer;
+      font-size: .8em;
+    }
   }
 }
 #footer{

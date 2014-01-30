@@ -124,7 +124,7 @@ var Askar = {
 
   desactiveChildren: function (parent_id) {
     'use strict';
-    var i, child_nodes = document.getElementById(parent_id).children;
+    var i, child_nodes = Tools.getChildren(document.getElementById(parent_id));
     if (child_nodes) {
       for (i = 0; i < child_nodes.length; i += 1) {
         if (!/inactive/.test(child_nodes[i].className)) {
