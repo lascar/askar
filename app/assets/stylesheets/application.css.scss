@@ -11,85 +11,107 @@
  *= require_self
  *= require_tree .
  */
+$link_color: #707070;
 body{
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+  margin:0px;
+  font-family: "DejaVu Serif",Helvetica,Arial,sans-serif;
+  font-size: 120%;
 }
-#user_nav{
+#header{
+  border-bottom: .1em solid black;
+  margin-bottom: 1em;
   background-color: silver;
-  padding: 1em;
-  margin-bottom: 1em; 
-}
-#tabs{
-  clear:both;
-  display:table;
-  width: 100%;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  border-bottom: 1px solid #AAA;
-  .active{
-    background: #FFF;
-    border-bottom-color: #FFF;
-    color: #000;
+  #site-stuff{
+    clear:both;
+    #logo{
+      float:left;
+      width:30%;
+      padding:.5em 0 1em 1em;
+      font-size: 200%;
+      font-weight: bold;
+    }
+    #user_nav{
+      width:50%;
+      float:right;
+      padding: 1em;
+      margin-bottom: 1em; 
+      text-align: right;
+      a{
+        color: $link_color;
+        &:hover{
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  #tabs{
+    clear:both;
+    display:table;
+    width: 100%;
+    text-align: left;
+    .active{
+      background: #FFF;
+      border-bottom-color: #FFF;
+      color: #000;
+    }
+  }
+  .tab{
+    position: relative;
+    float: left;
+    margin: -.1em .1em;
+    padding: .3em 1em;
+    border: .1em solid #AAA;
+    background: #ECECEC;
+    display: table;
+    cursor: pointer;
+    font-size: .8em;
   }
 }
-.tab{
-  position: relative;
-  float: left;
-  margin: -1px 1px;
-  padding: 0 15px;
-  border: 1px solid #AAA;
-  background: #ECECEC;
-  display: table;
-  cursor: pointer;
+#main{
+  margin-left: 10%;
+  margin-right: 10%;
 }
 #tabs_contents{
   clear:both;
+  line-height: 1.5;
   .active{
-    display:block;
+    display: block;
   }
   .inactive{
     display:none;
   }
+  .field{
+    float: left;
+    padding: .1em;
+  }
   .element_raw{
-    clear:both;
-    .field{
-      float:left;
-      padding: 5px;
-    }
-    .id{
-      width:40px;
-      margin-left:5px;
-    }
+    clear: both;
     .name{
-      width:200px;
+      width: 20%;
     }
     .description{
-      width:600px;
+      width: 60%;
     }
-    .link_show{
-      width:40px;
-      cursor:pointer;
-      font-weight:600;
-      color:#707070;
-      &:hover{
-        color:#FFFFFF;
-        background-color:#000000;
+    .div_link_show{
+      width: 10%;
+      .link_show{
+        cursor: pointer;
+        font-weight: 600;
+        color: $link_color;
+        &:hover{
+          color: #FFFFFF;
+          background-color: #000000;
+        }
       }
     }
   }
   .field_raw{
-    margin: 10px;
     clear: both;
     .label{
-      float: left;
-      margin-right: 10px;
       width: 20%;
       }
     .text{
-      float: left;
+      padding-left: 1em;
     }
   }
 }
