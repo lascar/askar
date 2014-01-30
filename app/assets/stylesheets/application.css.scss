@@ -13,6 +13,7 @@
  */
 $link_color: #707070;
 body{
+  background: none repeat scroll 0 0 #E6E6E6;
   margin:0px;
   font-family: "DejaVu Serif",Helvetica,Arial,sans-serif;
   font-size: 120%;
@@ -32,6 +33,7 @@ body{
     }
     #user_nav{
       width:50%;
+      font-size:80%;
       float:right;
       padding: 1em;
       margin-bottom: 1em; 
@@ -67,9 +69,26 @@ body{
     font-size: .8em;
   }
 }
+#footer{
+  font-size: 50%;
+  height:5%;
+  border-top: .1em solid black;
+  padding:.8em;
+  margin-top: 1em;
+  width:100%;
+  position: absolute;
+  bottom: 0;
+  background-color: silver;
+}
 #main{
-  margin-left: 10%;
-  margin-right: 10%;
+  padding: .5em;
+  position: absolute;
+  width:80%;
+  top:30%;
+  bottom: 15%;
+  background: #FFF;
+  margin-left: 7%;
+  margin-right: 7%;
 }
 #tabs_contents{
   clear:both;
