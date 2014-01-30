@@ -23,10 +23,10 @@
         </div>
         <div data-child="tab" id="tabs"></div>
       </div>
-      <div id="main">
       <% flash.each do |name, msg| %>
-        <%= content_tag :div, msg, :id => "flash#{name}" %>
+        <%= content_tag :div, msg, :id => "flash#{name}", :class => "flashmsg"%>
       <% end %>
+      <div id="main">
         <div data-child="tab_content" id="tabs_contents"></div>
         <% if params[:controller] == "sessions" or params[:controller] == "users" %>
           <%= yield %>
