@@ -20,7 +20,7 @@ test:
 
 production:
   adapter: postgresql
+  encoding: unicode
   database: askar
-  username: askar
-  password: supersecret
-  host: localhost
+  pool: 5
+  password:
