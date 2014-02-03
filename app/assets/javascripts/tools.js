@@ -40,7 +40,7 @@ var Tools = {
 
     createDiv: function (id_name, parent_id, class_name, content) {
         'use strict';
-        var text_node, new_div = document.createElement('div'), div_parent = document.getElementById(parent_id);
+        var text_node, new_div = document.createElement('div'), div_parent = document.querySelector(parent_id);
         new_div.setAttribute('id', id_name);
         if (class_name) {
             new_div.setAttribute('class', class_name);
@@ -57,7 +57,7 @@ var Tools = {
 
     desactiveChildren: function (parent_id) {
         'use strict';
-        var i, child_nodes = Tools.getChildren(document.getElementById(parent_id));
+        var i, child_nodes = Tools.getChildren(document.querySelector(parent_id));
         if (child_nodes) {
             for (i = 0; i < child_nodes.length; i += 1) {
                 if (!/inactive/.test(child_nodes[i].className)) {
@@ -72,7 +72,7 @@ var Tools = {
         var node, class_names;
         element_id = element_id ? "_" + element_id : "";
         Tools.desactiveChildren(parent_id);
-        node = document.getElementById(prefix + id + element_id);
+        node = document.querySelector(prefix + id + element_id);
         if (!node) {
             node = this.createDiv(prefix + id + element_id, parent_id);
             class_names = node.className || "";
@@ -85,6 +85,48 @@ var Tools = {
         } else {
             Tools.toogleClass(node, "inactive", "active");
             return -1;
-        }
-    }
+        },
+
+    lauchAction: function (url, method) {
+        'use strict';
+        var jsonresp, csrf_token = Askar.getCsrfToken(), xmlhttp;
+        method = method || 'GET';
+        xmlhttp = Askar.ajaxRequest();
+        xmlhttp.open(method, url, true);
+        xmlhttp.setRequestHeader('X-CSRF-Token', csrf_token);
+        xmlhttp.send();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                jsonresp = xmlhttp.responseText;
+                Tool.readResponse(Askar.parseJson(jsonresp));
+            }
+        };
+      },
+
+      ajaxRequest: function () {
+          'use strict';
+          var i, activexmodes = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"];
+          if (window.ActiveXObject) {
+              for (i = 0; i < activexmodes.length; i += 1) {
+                  try {
+                      return new ActiveXObject(activexmodes[i]);
+                  }
+                  catch (ignore) { }
+              }
+          } else if (window.XMLHttpRequest) {
+              return new XMLHttpRequest();
+          } else {
+              return false;
+          }
+      },
+
+      parseJson: function (jsonString) {
+          try {
+              return JSON.parse(jsonString);
+          } catch (ex) {
+              return eval('(' + jsonString + ')');
+          }
+      }
+
+   }
 }

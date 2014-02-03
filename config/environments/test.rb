@@ -33,4 +33,7 @@ Askar::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+  
+  # pagination
+  config.per_page = 20
 end

@@ -77,4 +77,7 @@ Askar::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+  
+  # pagination
+  config.per_page = 20
 end

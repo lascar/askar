@@ -5,33 +5,43 @@
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags  %>
   </head>
-    <body>
-      <div id="header">
-        <div id="site-stuff">
-          <div id="logo">
-            ASKAR
-          </div>
-          <div id="user_nav">
-            <% if current_user %>
-              Logged in as <%= current_user.email %>
-              <%= link_to "Log out", log_out_path %>
-            <% else %>
-              <%= link_to "Sign up", sign_up_path %> or 
-              <%= link_to "Log in", log_in_path %>
-            <% end %>
-          </div>
+  <body>
+    <div id="header">
+      <div id="site-stuff">
+        <div id="logo">
+          ASKAR
         </div>
-        <div data-child="tab" id="tabs"></div>
+        <div id="user_nav">
+          <% if current_user %>
+            Logged in as <%= current_user.email %>
+            <%= link_to "Log out", log_out_path %>
+          <% else %>
+            <%= link_to "Sign up", sign_up_path %> or 
+            <%= link_to "Log in", log_in_path %>
+          <% end %>
+        </div>
       </div>
-      <% flash.each do |name, msg| %>
-        <%= content_tag :div, msg, :id => "flash#{name}", :class => "flashmsg"%>
-      <% end %>
+      <div data-child="tab" id="tabs"></div>
+    </div>
+    <% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, :id => "flash#{name}", :class => "flashmsg"%>
+    <% end %>
+    <div id="wrapper">
+      <div id="menu">
+        <div id="content-menu">
+          <ul id="menu-list">
+          </ul>
+        </div>
+      </div>
       <div id="main">
-        <div data-child="tab_content" id="tabs_contents"></div>
-        <% if params[:controller] == "sessions" or params[:controller] == "users" %>
-          <%= yield %>
-        <% end %>
+        <div id="content">
+          <div data-child="tab_content" id="tabs_contents"></div>
+          <% if params[:controller] == "sessions" or params[:controller] == "users" %>
+            <%= yield %>
+          <% end %>
+        </div>
       </div>
+    </div>
     <div id="footer">
       Askar is my try to do an single page apps
     </div>

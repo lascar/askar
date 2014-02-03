@@ -1,6 +1,10 @@
 <script>
-  var url;
-  Askar.controller = "elements"; 
-  url = Askar.controller + "/list"; 
-  Askar.lauchAction(url);
+    var i, menuList, links, link;
+    var menuList = document.querySelector("#menu-list");
+    var links = <%= raw (@links.to_json) %>;
+    for (i = 0; i < links.length; i += 1) {
+      link = document.createElement("li");
+      link.innerHTML = "<a href=\"" + links[i].link + "\">" + links[i].text + "</a>";
+      menuList.appendChild(link);
+    }
 </script>

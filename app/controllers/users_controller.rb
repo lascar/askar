@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   skip_before_filter :logged_in?, :only => [:new, :create]
   def index
+    @links = [{:link => elements_path, :text => "Elements"}]
   end
 
   def new

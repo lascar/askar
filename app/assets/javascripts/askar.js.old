@@ -95,56 +95,5 @@ var Askar = {
     }
   },
 
-  lauchAction: function (url) {
-    'use strict';
-    var jsonresp, csrf_token = Askar.getCsrfToken(), xmlhttp;
-    //url = element_id === -1 ? Askar.controller + '/' + action : Askar.controller + '/' + action + '/' + element_id;
-    xmlhttp = Askar.ajaxRequest();
-    xmlhttp.open('POST', url, true);
-    xmlhttp.setRequestHeader('X-CSRF-Token', csrf_token);
-    xmlhttp.send();
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-        jsonresp = xmlhttp.responseText;
-        Askar.readResponse(Askar.parseJson(jsonresp));
-      }
-    };
-  },
-
-  ajaxRequest: function () {
-    'use strict';
-    var i, activexmodes = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"];
-    if (window.ActiveXObject) {
-      for (i = 0; i < activexmodes.length; i += 1) {
-        try {
-          return new ActiveXObject(activexmodes[i]);
-        }
-        catch (ignore) { }
-      }
-    } else if (window.XMLHttpRequest) {
-      return new XMLHttpRequest();
-    } else {
-      return false;
-    }
-  },
-
-  parseJson: function (jsonString) {
-      if (Askar.detectBrowser()) {
-          return eval('(' + jsonString + ')');
-      }
-      else {
-          return JSON.parse(jsonString);
-      }
-  },
-
-  detectBrowser: function () {
-    var ua =navigator.userAgent, re = /MSIE ([\d])/, match = ua.match(re);
-    if (match && match[1] <= 8) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
 };
 

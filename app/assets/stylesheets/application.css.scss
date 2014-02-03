@@ -17,6 +17,13 @@ body{
   margin:0px;
   font-family: "DejaVu Serif",Helvetica,Arial,sans-serif;
   font-size: 120%;
+  a{
+    color: $link_color;
+    &:hover{
+      text-decoration:none;
+      font-weight: bold;
+    }
+  }
 }
 #header{
   border-bottom: .1em solid black;
@@ -38,12 +45,6 @@ body{
       padding: 1em;
       margin-bottom: 1em; 
       text-align: right;
-      a{
-        color: $link_color;
-        &:hover{
-          font-weight: bold;
-        }
-      }
     }
   }
   #tabs{
@@ -85,59 +86,72 @@ body{
   bottom: 0;
   background-color: silver;
 }
-#main{
-  font-size:80%;
-  padding: .5em;
-  position: absolute;
-  width:80%;
-  top:30%;
-  bottom: 15%;
-  background: #FFF;
-  margin-left: 7%;
-  margin-right: 7%;
-}
-#tabs_contents{
-  clear:both;
-  line-height: 1.5;
-  .active{
-    display: block;
-  }
-  .inactive{
-    display:none;
-  }
-  .field{
+#wrapper{
+  clear: both;
+  #menu{
+    margin-left: 1%;
     float: left;
-    padding: .1em;
+    width: 15%;
+    height: 70%;
+    #content-menu{
+      padding: .2em;
+      font-size: .7em;
+    }
   }
-  .element_raw{
-    clear: both;
-    .name{
-      width: 20%;
-    }
-    .description{
-      width: 60%;
-    }
-    .div_link_show{
-      width: 10%;
-      .link_show{
-        cursor: pointer;
-        font-weight: 600;
-        color: $link_color;
-        &:hover{
-          color: #FFFFFF;
-          background-color: #000000;
+  #main{
+    height: 70%;
+    float: right;
+    font-size:80%;
+    width:75%;
+    top:30%;
+    background: #FFF;
+    margin-right: 5%;
+    #content{
+      padding: .5em;
+      #tabs_contents{
+        clear:both;
+        line-height: 1.5;
+        .active{
+          display: block;
+        }
+        .inactive{
+          display:none;
+        }
+        .field{
+          float: left;
+          padding: .1em;
+        }
+        .element_raw{
+          clear: both;
+          .name{
+            width: 20%;
+          }
+          .description{
+            width: 60%;
+          }
+          .div_link_show{
+            width: 10%;
+            .link_show{
+              cursor: pointer;
+              font-weight: 600;
+              color: $link_color;
+              &:hover{
+                color: #FFFFFF;
+                background-color: #000000;
+              }
+            }
+          }
+        }
+        .field_raw{
+          clear: both;
+          .label{
+            width: 20%;
+            }
+          .text{
+            padding-left: 1em;
+          }
         }
       }
     }
   }
-  .field_raw{
-    clear: both;
-    .label{
-      width: 20%;
-      }
-    .text{
-      padding-left: 1em;
-    }
-  }
 }
-

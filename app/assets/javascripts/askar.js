@@ -1,14 +1,6 @@
 /*jslint browser: true, nomen: true*/
 // an object Askar constructs is model with the attributes that is receive
 // ex. receive {serie_name: "elements", object_name: "element", object_attributes: ["name", "description", "weight"], actions: ["show", {edit: ["update"]}], values: [{id: 1, name: "element 1", description: "first element", weight: 25}, {id: 2, name: "element 2", description: "second element", weight: 34}], attributes_show_series: ["name", "descripcion"], attributes_show_object: ["id", "name", "description", "weight"], page: 2, total_pages: 4}
-if (typeof Object.create !== 'function') {
-    Object.create = function (o) {
-        'use strict';
-        var F = function () {};
-        F.prototype = o;
-        return new F();
-    };
-}
 var Askar = {
     received: {},
     serie_name: function () {
@@ -129,4 +121,3 @@ var Askar = {
 };
 var elements = Object.create(Askar);
 elements.received = {serie_name: "elements", object_name: "element", object_attributes: ["name", "description"], actions: ["show", {edit: ["update"]}], values: [{name: "element 1", description: "first element"}, {name: "element 2", description: "second element"}]};
-console.log(elements());
