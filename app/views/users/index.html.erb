@@ -1,10 +1,14 @@
 <script>
-    var i, menuList, links, link;
-    var menuList = document.querySelector("#menu-list");
+    var i, menuList, links, li, link;
+    var menuList = Tools.getElementById("#menu-list");
     var links = <%= raw (@links.to_json) %>;
     for (i = 0; i < links.length; i += 1) {
-      link = document.createElement("li");
-      link.innerHTML = "<a href=\"" + links[i].link + "\">" + links[i].text + "</a>";
-      menuList.appendChild(link);
+      li = document.createElement("li");
+      li.innerHTML = "<a id='link_menu_" + links[i].text + "' class='link_menu' href='#'>" + links[i].text + "</a>";
+      menuList.appendChild(li);
+      link = Tools.getElementById("#link_menu_" + links[i].text);
+      Tools.bindEvent(link, "click", function(){
+          alert("toto");
+      });
     }
 </script>

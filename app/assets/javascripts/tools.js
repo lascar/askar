@@ -85,7 +85,8 @@ var Tools = {
         } else {
             Tools.toogleClass(node, "inactive", "active");
             return -1;
-        },
+        }
+    },
 
     lauchAction: function (url, method) {
         'use strict';
@@ -101,32 +102,47 @@ var Tools = {
                 Tool.readResponse(Askar.parseJson(jsonresp));
             }
         };
-      },
+    },
 
-      ajaxRequest: function () {
-          'use strict';
-          var i, activexmodes = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"];
-          if (window.ActiveXObject) {
-              for (i = 0; i < activexmodes.length; i += 1) {
-                  try {
-                      return new ActiveXObject(activexmodes[i]);
-                  }
-                  catch (ignore) { }
-              }
-          } else if (window.XMLHttpRequest) {
-              return new XMLHttpRequest();
-          } else {
-              return false;
-          }
-      },
+    ajaxRequest: function () {
+        'use strict';
+        var i, activexmodes = ["Msxml2.XMLHTTP", "Microsoft.XMLHTTP"];
+        if (window.ActiveXObject) {
+            for (i = 0; i < activexmodes.length; i += 1) {
+                try {
+                    return new ActiveXObject(activexmodes[i]);
+                }
+                catch (ignore) { }
+            }
+        } else if (window.XMLHttpRequest) {
+            return new XMLHttpRequest();
+        } else {
+            return false;
+        }
+    },
 
-      parseJson: function (jsonString) {
-          try {
-              return JSON.parse(jsonString);
-          } catch (ex) {
-              return eval('(' + jsonString + ')');
-          }
-      }
+    parseJson: function (jsonString) {
+        try {
+            return JSON.parse(jsonString);
+        } catch (ex) {
+            return eval('(' + jsonString + ')');
+        }
+    },
 
-   }
+    getElementById: function (string) {
+        if (typeof(document.querySelector) === "ifunction") {
+            return document.querySelector(string);
+        } else {
+            return document.getElementById(string.replace(/^#/, ""));
+        }
+    },
+
+    bindEvent: function (element, eventName, eventHandler) {
+        if (typeof(element["addEventListener"] === "function")) {
+            element.addEventListener(eventName, eventHandler, false);
+        } else {
+            element.attachEvent('on'+eventName, eventHandler);
+        }
+    }
+
 }
