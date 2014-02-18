@@ -8,9 +8,7 @@
   <body>
     <div id="header">
       <div id="site-stuff">
-        <div id="logo">
-          <%= image_tag("logo.png") %>
-        </div>
+        <%= image_tag("logo.png", :id => "logo") %>
         <div id="user_nav">
           <% if current_user %>
             Logged in as <%= current_user.email %>
