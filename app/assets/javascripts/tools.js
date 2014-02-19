@@ -7,6 +7,7 @@
 // document.writeln((-10 / 3).integer( ));
 
 Function.prototype.method = function (name, func) {
+    'use strict';
     if (!this.prototype[name]) {
         this.prototype[name] = func;
         return this;
@@ -15,18 +16,20 @@ Function.prototype.method = function (name, func) {
 // crockford gp ch3
 //create an object directly from an other object
 if (typeof Object.create !== 'function') {
-     Object.create = function (o) {
-         var F = function () {};
-         F.prototype = o;
-         return new F();
-     };
+    Object.create = function (o) {
+        'use strict';
+        var F = function () { return; };
+        F.prototype = o;
+        return new F();
+    };
 };
 var Tools = {
     //zacas childNodes for ie8- count the white space between elements as element
     getChildren: function (node) {
-        var i, len, array = [], childs = node.childNodes;
+        'use strict';
+        var i, array = [], childs = node.childNodes;
         for (i = 0; i < childs.length; i += 1) {
-            if (childs[i].nodeType == 1){
+            if (childs[i].nodeType === 1) {
                 array.push(childs[i]);
             }
         }
@@ -34,9 +37,9 @@ var Tools = {
     },
 
     toogleClass: function (element, old_class, new_class) {
-       'use strict';
-       element.className = element.className.replace(old_class, new_class);
-     },
+        'use strict';
+        element.className = element.className.replace(old_class, new_class);
+    },
 
     createDiv: function (id_name, parent_id, class_name, content) {
         'use strict';
@@ -67,7 +70,7 @@ var Tools = {
         }
     },
 
-    createOrActiveNode: function (prefix, id, parent_id, element_id){
+    createOrActiveNode: function (prefix, id, parent_id, element_id) {
         'use strict';
         var node, class_names;
         element_id = element_id ? "_" + element_id : "";
@@ -82,26 +85,54 @@ var Tools = {
                 node.className = class_names + " active";
             }
             return node;
-        } else {
-            Tools.toogleClass(node, "inactive", "active");
-            return -1;
         }
+        Tools.toogleClass(node, "inactive", "active");
+        return -1;
     },
 
-    lauchAction: function (url, method) {
+    lauchAction: function (url, whatNext, method, data) {
         'use strict';
-        var jsonresp, csrf_token = Askar.getCsrfToken(), xmlhttp;
+        var jsonresp, csrf_token = Tools.getCsrfToken(), xmlhttp;
         method = method || 'GET';
-        xmlhttp = Askar.ajaxRequest();
+        xmlhttp = Tools.ajaxRequest();
         xmlhttp.open(method, url, true);
         xmlhttp.setRequestHeader('X-CSRF-Token', csrf_token);
-        xmlhttp.send();
+        if (method === 'GET') {
+            xmlhttp.send();
+        } else {
+            xmlhttp.send(data);
+        }
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 jsonresp = xmlhttp.responseText;
-                Tool.readResponse(Askar.parseJson(jsonresp));
+                Tools.whatNext(whatNext, Tools.whatNext(jsonresp));
             }
         };
+    },
+
+    whatNext: function (func, value) {
+        "use strict";
+        var toExecute = {
+            'displaySerie': function () {
+                return Tools.displaySerie(value);
+            }
+        };
+        try {
+            return toExecute[func]();
+        }
+        catch (e) {
+            return false;
+        }
+    },
+
+    getCsrfToken: function () {
+        'use strict';
+        var i, array_meta_tag = document.getElementsByTagName('meta');
+        for (i = 0; i < array_meta_tag.length; i += 1) {
+            if (array_meta_tag[i].getAttribute('name') === "csrf-token") {
+                return array_meta_tag[i].getAttribute('content');
+            }
+        }
     },
 
     ajaxRequest: function () {
@@ -122,6 +153,7 @@ var Tools = {
     },
 
     parseJson: function (jsonString) {
+        'use strict';
         try {
             return JSON.parse(jsonString);
         } catch (ex) {
@@ -130,45 +162,44 @@ var Tools = {
     },
 
     getElementById: function (string) {
-        if (typeof(document.querySelector) === "ifunction") {
+        'use strict';
+        if (typeof (document.querySelector) === "ifunction") {
             return document.querySelector(string);
-        } else {
-            return document.getElementById(string.replace(/^#/, ""));
         }
+        return document.getElementById(string.replace(/^#/, ""));
     },
 
     bindEvent: function (element, eventName, eventHandler) {
-        if (typeof(element["addEventListener"] === "function")) {
+        'use strict';
+        if (typeof (element.addEventListener === "function")) {
             element.addEventListener(eventName, eventHandler, false);
         } else {
-            element.attachEvent('on'+eventName, eventHandler);
+            element.attachEvent('on' + eventName, eventHandler);
         }
-    }
+    },
 
     displayTab: function (type, object_id) {
         'use strict';
-        var tab_id, content, tab;
+        var tab_id, content, tab, id, element_id, tab_width, suffix, class_names, match, action;
         tab_id = type !== "serie" ? this.object_name() + "_" + object_id : this.serie_name() + "_" + this.page();
         content = type !== "serie" ? this.object_name() + " " + object_id : this.serie_name() + "<br>" + "page " + this.page();
-
-        var tab, tab_width, suffix, class_names, match, action;
-        id = id || Askar.urlToId();
+        id = id || Tools.urlToId();
         element_id = element_id || "";
-        suffix =  Askar.action + (element_id ? "_" + Askar.element.id : "");
-        content = content || Askar.controller + "<BR>" + suffix;
-        tab =  Askar.createOrActiveNode("tab_", id, "tabs", element_id);
+        suffix =  Tools.action + (element_id ? "_" + Tools.element.id : "");
+        content = content || Tools.controller + "<BR>" + suffix;
+        tab =  Tools.createOrActiveNode("tab_", id, "tabs", element_id);
         if (tab !== -1) {
             class_names = tab.className || "";
             tab.className = class_names + " tab";
-            tab_width = Askar.controller.length > suffix.length ? (Askar.controller.length + 10) : (suffix.length + 10);
+            tab_width = Tools.controller.length > suffix.length ? (Tools.controller.length + 10) : (suffix.length + 10);
             tab.style.width = tab_width + "px";
             // set the width for ie78
             tab.onclick = function () {
                 match = this.id.match(/^tab_([a-z]*)(?:_(\d*))?/);
                 id = match ? match[1] : "";
                 element_id = match ? match[2] : "";
-                action = Askar.extractActionFromId(this.id);
-                Askar.executeResponse(id, element_id);
+                action = Tools.extractActionFromId(this.id);
+                Tools.executeResponse(id, element_id);
           };
           tab.innerHTML = content;
         }
@@ -176,22 +207,22 @@ var Tools = {
     displayTabContentShow: function (id, element_id) {
         'use strict';
         var tab_content, i, field, suffix, content, field_raw_id, field_raw, label_field_raw_id, text_field_raw_id;
-        id = id || Askar.urlToId();
-        element_id = element_id || "_" + Askar.element.id;
-        Askar.desactiveChildren("tabs_contents");
-        tab_content =  Askar.createOrActiveNode("", id, "tabs_contents", element_id);
+        id = id || Tools.urlToId();
+        element_id = element_id || "_" + Tools.element.id;
+        Tools.desactiveChildren("tabs_contents");
+        tab_content =  Tools.createOrActiveNode("", id, "tabs_contents", element_id);
         if (tab_content !== -1) {
           tab_content.className += ' tab_content';
-          for (i = 0; i < Askar.fields_to_show.length; i += 1) {
-            field = Askar.fields_to_show[i];
-            suffix = Askar.element ? "_" + Askar.element.id + "_" + field : "_" + field;
-            field_raw_id = Askar.urlToId() + suffix;
-            label_field_raw_id = Askar.urlToId() + suffix + "_label";
-            text_field_raw_id =  Askar.urlToId() + suffix + "_" + field + "_text";
-            field_raw = Askar.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
-            Askar.createDiv(label_field_raw_id, field_raw_id, "field label " + field, field);
-            content = Askar.element ? Askar.element[field] : '';
-            Askar.createDiv(text_field_raw_id, field_raw_id, "field text " + field, content);
+          for (i = 0; i < Tools.fields_to_show.length; i += 1) {
+            field = Tools.fields_to_show[i];
+            suffix = Tools.element ? "_" + Tools.element.id + "_" + field : "_" + field;
+            field_raw_id = Tools.urlToId() + suffix;
+            label_field_raw_id = Tools.urlToId() + suffix + "_label";
+            text_field_raw_id =  Tools.urlToId() + suffix + "_" + field + "_text";
+            field_raw = Tools.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
+            Tools.createDiv(label_field_raw_id, field_raw_id, "field label " + field, field);
+            content = Tools.element ? Tools.element[field] : '';
+            Tools.createDiv(text_field_raw_id, field_raw_id, "field text " + field, content);
           }
         }
       },
@@ -199,20 +230,20 @@ var Tools = {
     displayTabContentList: function (id) {
         'use strict';
         var i, j, element, field, action, element_raw, field_content_div, tab_content;
-        id = id || Askar.urlToId();
-        tab_content = Askar.createOrActiveNode("", id, "tabs_contents", "");
+        id = id || Tools.urlToId();
+        tab_content = Tools.createOrActiveNode("", id, "tabs_contents", "");
         if (tab_content !== -1) {
           tab_content.className += ' tab_content';
-          for (i = 0; i < Askar.elements.length; i += 1) {
-            element = Askar.elements[i];
-            element_raw = Askar.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
-            for (j = 0; j < Askar.fields_to_show.length; j += 1) {
-              field = Askar.fields_to_show[j];
-              field_content_div = Askar.createDiv(Askar.urlToId() + "_" + element.id, element_raw.id, "field " + field, element[field]);
+          for (i = 0; i < Tools.elements.length; i += 1) {
+            element = Tools.elements[i];
+            element_raw = Tools.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
+            for (j = 0; j < Tools.fields_to_show.length; j += 1) {
+              field = Tools.fields_to_show[j];
+              field_content_div = Tools.createDiv(Tools.urlToId() + "_" + element.id, element_raw.id, "field " + field, element[field]);
             }
-            for (j = 0; j < Askar.actions.length; j += 1) {
-              action = Askar.actions[j];
-              Askar.buildLinkAction(element, action, element_raw.id);
+            for (j = 0; j < Tools.actions.length; j += 1) {
+              action = Tools.actions[j];
+              Tools.buildLinkAction(element, action, element_raw.id);
             }
           }
         },
