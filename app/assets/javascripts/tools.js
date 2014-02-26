@@ -105,24 +105,9 @@ var Tools = {
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 jsonresp = xmlhttp.responseText;
-                Tools.whatNext(whatNext, Tools.whatNext(jsonresp));
+                return this.whatNext(whatNext, Tools.whatNext(jsonresp));
             }
         };
-    },
-
-    whatNext: function (func, value) {
-        "use strict";
-        var toExecute = {
-            'displaySerie': function () {
-                return Tools.displaySerie(value);
-            }
-        };
-        try {
-            return toExecute[func]();
-        }
-        catch (e) {
-            return false;
-        }
     },
 
     getCsrfToken: function () {
@@ -200,10 +185,11 @@ var Tools = {
                 element_id = match ? match[2] : "";
                 action = Tools.extractActionFromId(this.id);
                 Tools.executeResponse(id, element_id);
-          };
-          tab.innerHTML = content;
+            };
+            tab.innerHTML = content;
         }
     },
+    
     displayTabContentShow: function (id, element_id) {
         'use strict';
         var tab_content, i, field, suffix, content, field_raw_id, field_raw, label_field_raw_id, text_field_raw_id;
@@ -212,20 +198,20 @@ var Tools = {
         Tools.desactiveChildren("tabs_contents");
         tab_content =  Tools.createOrActiveNode("", id, "tabs_contents", element_id);
         if (tab_content !== -1) {
-          tab_content.className += ' tab_content';
-          for (i = 0; i < Tools.fields_to_show.length; i += 1) {
-            field = Tools.fields_to_show[i];
-            suffix = Tools.element ? "_" + Tools.element.id + "_" + field : "_" + field;
-            field_raw_id = Tools.urlToId() + suffix;
-            label_field_raw_id = Tools.urlToId() + suffix + "_label";
-            text_field_raw_id =  Tools.urlToId() + suffix + "_" + field + "_text";
-            field_raw = Tools.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
-            Tools.createDiv(label_field_raw_id, field_raw_id, "field label " + field, field);
-            content = Tools.element ? Tools.element[field] : '';
-            Tools.createDiv(text_field_raw_id, field_raw_id, "field text " + field, content);
-          }
+            tab_content.className += ' tab_content';
+            for (i = 0; i < Tools.fields_to_show.length; i += 1) {
+                field = Tools.fields_to_show[i];
+                suffix = Tools.element ? "_" + Tools.element.id + "_" + field : "_" + field;
+                field_raw_id = Tools.urlToId() + suffix;
+                label_field_raw_id = Tools.urlToId() + suffix + "_label";
+                text_field_raw_id =  Tools.urlToId() + suffix + "_" + field + "_text";
+                field_raw = Tools.createDiv(field_raw_id, tab_content.id, "field_raw " + field);
+                Tools.createDiv(label_field_raw_id, field_raw_id, "field label " + field, field);
+                content = Tools.element ? Tools.element[field] : '';
+                Tools.createDiv(text_field_raw_id, field_raw_id, "field text " + field, content);
+            }
         }
-      },
+    },
 
     displayTabContentList: function (id) {
         'use strict';
@@ -233,32 +219,19 @@ var Tools = {
         id = id || Tools.urlToId();
         tab_content = Tools.createOrActiveNode("", id, "tabs_contents", "");
         if (tab_content !== -1) {
-          tab_content.className += ' tab_content';
-          for (i = 0; i < Tools.elements.length; i += 1) {
-            element = Tools.elements[i];
-            element_raw = Tools.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
-            for (j = 0; j < Tools.fields_to_show.length; j += 1) {
-              field = Tools.fields_to_show[j];
-              field_content_div = Tools.createDiv(Tools.urlToId() + "_" + element.id, element_raw.id, "field " + field, element[field]);
+            tab_content.className += ' tab_content';
+            for (i = 0; i < Tools.elements.length; i += 1) {
+                element = Tools.elements[i];
+                element_raw = Tools.createDiv("element_raw_" + element.id, tab_content.id, "element_raw");
+                for (j = 0; j < Tools.fields_to_show.length; j += 1) {
+                    field = Tools.fields_to_show[j];
+                    field_content_div = Tools.createDiv(Tools.urlToId() + "_" + element.id, element_raw.id, "field " + field, element[field]);
+                }
+                for (j = 0; j < Tools.actions.length; j += 1) {
+                    action = Tools.actions[j];
+                    Tools.buildLinkAction(element, action, element_raw.id);
+                }
             }
-            for (j = 0; j < Tools.actions.length; j += 1) {
-              action = Tools.actions[j];
-              Tools.buildLinkAction(element, action, element_raw.id);
-            }
-          }
-        },
-
-    // ex. receive {serieName: "elements", objectName: "element", objectAttributes: ["name", "description", "weight"], actions: ["show", {edit: ["update"]}], values: [{id: 1, name: "element 1", description: "first element", weight: 25}, {id: 2, name: "element 2", description: "second element", weight: 34}], attributesShowSeries: ["name", "descripcion"], attributesShowObject: ["id", "name", "description", "weight"], page: 2, totalPages: 4}
-
-    showSeries (page, totalInPage) {
-        // verify if serie was update in the server else update serie
-        // verify if page exists and uptodate else create or update
-        // verify if tab exists else create
-        // display page
-    },
-
-    isSerieUpToDate () {
-        // verify in the server if this.upToDate
+        }
     }
-
 }
