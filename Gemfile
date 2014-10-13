@@ -51,6 +51,6 @@ end
 # gem 'capistrano', group: :development
 
 # Use debugger
-gem 'debugger', group: [:development, :test]
+gem 'byebug', group: [:development, :test]
 gem 'rails_12factor', group: :production
-ruby "1.9.3"
+ruby "2.1.3"
