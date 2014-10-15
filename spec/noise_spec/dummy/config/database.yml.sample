@@ -1,0 +1,8 @@
+development:
+  adapter: postgresql
+  database: noise_development
+  host: localhost
+test:
+  adapter: postgresql
+  database: noise_test
+  host: localhost

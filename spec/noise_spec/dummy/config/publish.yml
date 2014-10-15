@@ -1,0 +1,16 @@
+development:
+  publication_name: "hello-canada"
+  publication_host: "http://ca.hellomagazine.com"
+  preview_host: "http://hola-frontend.rea.hola.com"
+  summary_file_path: "public/system/publish/summary"
+  preview_targets:
+  publish_targets:
+
+test:
+  publication_name: "hello-canada"
+  publication_host: "http://www.hola.com"
+  preview_host: "http://preview.test.com"
+  summary_file_path: "tmp/publish/summary"
+  publication_url_prefix_id: "007"
+  preview_targets:
+  publish_targets:
