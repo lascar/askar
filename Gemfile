@@ -3,14 +3,10 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
 
-# Use sqlite3 as the database for Active Record
-group :development do
-  gem 'sqlite3'
-end
-
 group :production do
   gem 'pg'
   gem "activerecord-postgresql-adapter"
+  gem 'rails_12factor'
 end
 
 gem 'bcrypt-ruby', :require => 'bcrypt'
@@ -36,8 +32,14 @@ gem 'therubyracer', platforms: :ruby
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 1.2'
 
+group :test, :development do
+  gem "rspec-rails"
+  gem "sqlite3"
+  gem 'rack_session_access'
+  gem 'byebug'
+end
+
 group :test do
-  gem 'rspec-rails'
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'factory_girl_rails'
@@ -58,7 +60,4 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 
-# Use debugger
-gem 'byebug', group: [:development, :test]
-gem 'rails_12factor', group: :production
 ruby "2.1.3"

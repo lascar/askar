@@ -14,7 +14,37 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require 'capybara/rspec'
+require 'factory_girl_rails'
+require 'capybara'
+require 'database_cleaner'
+require 'sqlite3'
+require 'active_record'
+
+# Load support files
+Dir["#{File.dirname(__FILE__)}/support/*.rb"].each { |f| require f }
+
 RSpec.configure do |config|
+  config.include Capybara::DSL
+  config.include FactoryGirl::Syntax::Methods
+  config.include HelperMethods::Controller
+
+
+  config.before(:suite) do
+    ActiveRecord::Base.establish_connection(
+      :adapter => "sqlite3",
+      :database  => "db/test.sqlite3"
+    )
+    DatabaseCleaner[:active_record].strategy = :truncation
+    DatabaseCleaner[:active_record].clean_with(:truncation)
+  end
+
+  config.around(:each) do |example|
+    DatabaseCleaner[:active_record].cleaning do
+      example.run
+    end
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
