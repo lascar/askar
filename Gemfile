@@ -33,10 +33,12 @@ gem 'therubyracer', platforms: :ruby
 # gem 'jbuilder', '~> 1.2'
 
 group :test, :development do
+  gem 'reek'
   gem "rspec-rails"
   gem "sqlite3"
   gem 'rack_session_access'
   gem 'byebug'
+  gem 'rails_best_practices'
 end
 
 group :test do

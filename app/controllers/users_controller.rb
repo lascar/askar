@@ -1,3 +1,4 @@
+# user controller
 class UsersController < ApplicationController
   skip_before_filter :logged_in?, :only => [:new, :create]
   def index
@@ -18,7 +19,6 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).require(:password)
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).require(:email, :password, :password_confirmation)
   end
 end
